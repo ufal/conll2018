@@ -8,7 +8,6 @@ python:
   - "3.5"
   - "3.6"
 script:
-script:
   - (cd evaluation_script && python -m unittest -v conll18_ud_eval)
   - (cd evaluation_script && python conll18_ud_eval.py -v tests/gold.conllu tests/sys1.conllu | diff -s tests/sys1-expected.results -)
   - (cd evaluation_script && python conll18_ud_eval.py -v tests/gold.conllu tests/sys2.conllu | diff -s tests/sys2-expected.results -)
