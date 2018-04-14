@@ -194,8 +194,8 @@ def load_conllu(file):
                         word.parent = "remapping"
                         process_word(parent)
                         word.parent = parent
-                        if word.columns[DEPREL] in FUNCTIONAL:
-                            parent.func_children.append(word)
+                if word.parent and word.columns[DEPREL] in FUNCTIONAL:
+                    word.parent.func_children.append(word)
 
             for word in ud.words[sentence_start:]:
                 process_word(word)
@@ -457,7 +457,7 @@ def evaluate(gold_ud, system_ud, deprel_weights=None):
             feats += 1
             if w.columns[UPOS] == g.columns[UPOS] and w.columns[XPOS] == g.columns[XPOS]:
                 alltags += 1
-        if w.columns[LEMMA] == g.columns[LEMMA]:
+        if g.columns[LEMMA] == '_' or w.columns[LEMMA] == g.columns[LEMMA]:
             lemmas += 1
         if words.gold_parent == words.system_parent_gold_aligned:
             uas += 1
