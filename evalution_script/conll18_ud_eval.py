@@ -152,7 +152,7 @@ def load_conllu(file):
             self.columns[FEATS] = "|".join(sorted(feat for feat in columns[FEATS].split("|")
                                                   if feat.split("=", 1)[0] in UNIVERSAL_FEATURES))
             # Let's ignore language-specific deprel subtypes.
-            self.columns[DEPREL] = columns[DEPREL].split(':')[0]
+            self.columns[DEPREL] = columns[DEPREL].split(":")[0]
             # Precompute which deprels are CONTENT_DEPRELS and which FUNCTIONAL_DEPRELS
             self.is_content_deprel = self.columns[DEPREL] in CONTENT_DEPRELS
             self.is_functional_deprel = self.columns[DEPREL] in FUNCTIONAL_DEPRELS
