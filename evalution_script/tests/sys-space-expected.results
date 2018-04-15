@@ -1,4 +1,4 @@
-Metrics    | Precision |    Recall |  F1 Score | AligndAcc
+Metric     | Precision |    Recall |  F1 Score | AligndAcc
 -----------+-----------+-----------+-----------+-----------
 Tokens     |     92.86 |     86.67 |     89.66 |
 Sentences  |    100.00 |    100.00 |    100.00 |

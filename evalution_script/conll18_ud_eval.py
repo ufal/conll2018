@@ -482,7 +482,7 @@ def main():
         print("MLAS Score: {:.2f}".format(100 * evaluation["MLAS"].f1))
         print("BLEX Score: {:.2f}".format(100 * evaluation["BLEX"].f1))
     else:
-        print("Metrics    | Precision |    Recall |  F1 Score | AligndAcc")
+        print("Metric     | Precision |    Recall |  F1 Score | AligndAcc")
         print("-----------+-----------+-----------+-----------+-----------")
 
         for metric in["Tokens", "Sentences", "Words", "UPOS", "XPOS", "UFeats", "AllTags", "Lemmas", "UAS", "LAS", "CLAS", "MLAS", "BLEX"]:
