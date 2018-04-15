@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-# TODO: The FEATS score now reports F1 score for the *universal* FEATS only,
-# while conll17_ud_eval.py reported all the FEATS. It is a question what is better.
-
 # Compatible with Python 2.7 and 3.2+, can be used either as a module
 # or a standalone executable.
 #
@@ -16,20 +13,7 @@
 # Authors: Milan Straka, Martin Popel <surname@ufal.mff.cuni.cz>
 #
 # Changelog:
-# - [02 Jan 2017] Version 0.9: Initial release
-# - [25 Jan 2017] Version 0.9.1: Fix bug in LCS alignment computation
-# - [10 Mar 2017] Version 1.0: Add documentation and test
-#                              Compare HEADs correctly using aligned words
-#                              Allow evaluation with erroneous spaces in forms
-#                              Compare forms in LCS case insensitively
-#                              Detect cycles and multiple root nodes
-#                              Compute AlignedAccuracy
-# - [27 Mar 2017] Version 1.1: Add CLAS metrics
-# - [11 May 2017] Version 1.2: Do not throw an exception if system file
-#                              characters are a strict prefix of gold
-#                              file characters.
-# - [25 Jan 2018] Version 1.3: Explicitly add MPL 2.0 license.
-# - [4 April 2018] Version 2.0 Adapted for CoNLL2018 (added MLAS and BLEX metrics)
+# - [4 April 2018] Version 0.9 Adapted from CoNLL2017 (added MLAS and BLEX metrics)
 
 # Command line usage
 # ------------------
@@ -515,14 +499,14 @@ def main():
     parser.add_argument("--verbose", "-v", default=0, action="count",
                         help="Print all metrics.")
     parser.add_argument("--counts", "-c", default=0, action="count",
-                        help="Print raw counts of correct/gold/system instead of prec/rec/f1 for all metrics.")
+                        help="Print raw counts of correct/gold/system/aligned words instead of prec/rec/F1 for all metrics.")
     args = parser.parse_args()
 
     # Evaluate
     evaluation = evaluate_wrapper(args)
 
     # Print the evaluation
-    if not args.verbose:
+    if not args.verbose and not args.counts:
         print("LAS F1 Score: {:.2f}".format(100 * evaluation["LAS"].f1))
         print("BLEX Score: {:.2f}".format(100 * evaluation["BLEX"].f1))
         print("MLAS Score: {:.2f}".format(100 * evaluation["MLAS"].f1))
@@ -540,7 +524,7 @@ def main():
                     evaluation[metric].correct,
                     evaluation[metric].gold_total,
                     evaluation[metric].system_total,
-                    evaluation[metric].aligned_total or evaluation[metric].correct if metric == "Words" else ""
+                    evaluation[metric].aligned_total or (evaluation[metric].correct if metric == "Words" else "")
                 ))
             else:
                 print("{:11}|{:10.2f} |{:10.2f} |{:10.2f} |{}".format(

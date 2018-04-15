@@ -1,0 +1,15 @@
+Metric     | Correct   |      Gold | Predicted | Aligned
+-----------+-----------+-----------+-----------+-----------
+Tokens     |         7 |         7 |         7 |          
+Sentences  |         1 |         1 |         1 |          
+Words      |         7 |         7 |         7 |         7
+UPOS       |         7 |         7 |         7 |         7
+XPOS       |         7 |         7 |         7 |         7
+UFeats     |         7 |         7 |         7 |         7
+AllTags    |         7 |         7 |         7 |         7
+Lemmas     |         7 |         7 |         7 |         7
+UAS        |         6 |         7 |         7 |         7
+LAS        |         6 |         7 |         7 |         7
+CLAS       |         2 |         3 |         3 |         3
+MLAS       |         2 |         3 |         3 |         3
+BLEX       |         2 |         3 |         3 |         3

@@ -39,6 +39,8 @@
 #       HEAD+DEPREL(ignoring subtypes)+UPOS+UFEATS+FunctionalChildren(DEPREL+UPOS+UFEATS) match
 #   - BLEX: using aligned words with content DEPREL, how well does
 #       HEAD+DEPREL(ignoring subtypes)+LEMMAS match
+# - if -c is given, raw counts of correct/gold_total/system_total/aligned words are printed
+#   instead of precision/recall/F1/AlignedAccuracy for all metrics.
 
 # API usage
 # ---------
@@ -265,6 +267,10 @@ def load_conllu(file):
 def evaluate(gold_ud, system_ud):
     class Score:
         def __init__(self, gold_total, system_total, correct, aligned_total=None):
+            self.correct = correct
+            self.gold_total = gold_total
+            self.system_total = system_total
+            self.aligned_total = aligned_total
             self.precision = correct / system_total if system_total else 0.0
             self.recall = correct / gold_total if gold_total else 0.0
             self.f1 = 2 * correct / (system_total + gold_total) if system_total + gold_total else 0.0
@@ -474,28 +480,41 @@ def main():
                         help="Name of the CoNLL-U file with the predicted data.")
     parser.add_argument("--verbose", "-v", default=0, action="count",
                         help="Print all metrics.")
+    parser.add_argument("--counts", "-c", default=0, action="count",
+                        help="Print raw counts of correct/gold/system/aligned words instead of prec/rec/F1 for all metrics.")
     args = parser.parse_args()
 
     # Evaluate
     evaluation = evaluate_wrapper(args)
 
     # Print the evaluation
-    if not args.verbose:
+    if not args.verbose and not args.counts:
         print("LAS F1 Score: {:.2f}".format(100 * evaluation["LAS"].f1))
         print("MLAS Score: {:.2f}".format(100 * evaluation["MLAS"].f1))
         print("BLEX Score: {:.2f}".format(100 * evaluation["BLEX"].f1))
     else:
-        print("Metric     | Precision |    Recall |  F1 Score | AligndAcc")
+        if args.counts:
+            print("Metric     | Correct   |      Gold | Predicted | Aligned")
+        else:
+            print("Metric     | Precision |    Recall |  F1 Score | AligndAcc")
         print("-----------+-----------+-----------+-----------+-----------")
-
         for metric in["Tokens", "Sentences", "Words", "UPOS", "XPOS", "UFeats", "AllTags", "Lemmas", "UAS", "LAS", "CLAS", "MLAS", "BLEX"]:
-            print("{:11}|{:10.2f} |{:10.2f} |{:10.2f} |{}".format(
-                metric,
-                100 * evaluation[metric].precision,
-                100 * evaluation[metric].recall,
-                100 * evaluation[metric].f1,
-                "{:10.2f}".format(100 * evaluation[metric].aligned_accuracy) if evaluation[metric].aligned_accuracy is not None else ""
-            ))
+            if args.counts:
+                print("{:11}|{:10} |{:10} |{:10} |{:10}".format(
+                    metric,
+                    evaluation[metric].correct,
+                    evaluation[metric].gold_total,
+                    evaluation[metric].system_total,
+                    evaluation[metric].aligned_total or (evaluation[metric].correct if metric == "Words" else "")
+                ))
+            else:
+                print("{:11}|{:10.2f} |{:10.2f} |{:10.2f} |{}".format(
+                    metric,
+                    100 * evaluation[metric].precision,
+                    100 * evaluation[metric].recall,
+                    100 * evaluation[metric].f1,
+                    "{:10.2f}".format(100 * evaluation[metric].aligned_accuracy) if evaluation[metric].aligned_accuracy is not None else ""
+                ))
 
 if __name__ == "__main__":
     main()
