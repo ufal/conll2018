@@ -194,11 +194,14 @@ def load_conllu(file):
                         word.parent = "remapping"
                         process_word(parent)
                         word.parent = parent
-                if word.parent and word.columns[DEPREL] in FUNCTIONAL:
-                    word.parent.func_children.append(word)
 
             for word in ud.words[sentence_start:]:
                 process_word(word)
+            # func_children cannot be assigned within process_word
+            # because it is called recursively and may result in adding one child twice.
+            for word in ud.words[sentence_start:]:
+                if word.parent and word.columns[DEPREL] in FUNCTIONAL:
+                    word.parent.func_children.append(word)
 
             # Check there is a single root node
             if len([word for word in ud.words[sentence_start:] if word.parent is None]) != 1:
