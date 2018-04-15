@@ -1,0 +1,9 @@
+# text = I tato oblast by byla zničena.
+1	I	i	CCONJ	J^-------------	_	3	advmod:emph	_	_
+2	tato	tento	DET	PDFS1----------	Case=Nom|Gender=Fem|Number=Sing|PronType=Dem	3	det	_	_
+3	oblast	oblast	NOUN	NNFS1-----A----	Case=Nom|Gender=Fem|Number=Sing|Polarity=Pos	6	nsubj:pass	_	_
+4	by	být	AUX	Vc-------------	Mood=Cnd|VerbForm=Fin	6	aux:pass	_	_
+5	byla	být	AUX	VpQW---XR-AA---	Gender=Fem,Neut|Number=Plur,Sing|Polarity=Pos|Tense=Past|VerbForm=Part|Voice=Act	6	aux:pass	_	_
+6	zničena	zničený	ADJ	VsQW---XX-AP---	Aspect=Perf|Gender=Fem,Neut|Number=Plur,Sing|Polarity=Pos|Variant=Short|VerbForm=Part|Voice=Pass	0	root	_	SpaceAfter=No
+7	.	.	PUNCT	Z:-------------	_	6	punct	_	SpaceAfter=No
+
