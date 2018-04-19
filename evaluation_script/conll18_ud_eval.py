@@ -13,7 +13,9 @@
 # Authors: Milan Straka, Martin Popel <surname@ufal.mff.cuni.cz>
 #
 # Changelog:
-# - [12 Apr 2018] Version 0.9: Initial release
+# - [12 Apr 2018] Version 0.9: Initial release.
+# - [19 Apr 2018] Version 1.0: Fix bug in MLAS (duplicate entries in functional_children).
+#                              Add --counts option.
 
 # Command line usage
 # ------------------
