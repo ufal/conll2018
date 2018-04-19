@@ -478,9 +478,9 @@ def main():
                         help="Name of the CoNLL-U file with the gold data.")
     parser.add_argument("system_file", type=str,
                         help="Name of the CoNLL-U file with the predicted data.")
-    parser.add_argument("--verbose", "-v", default=0, action="count",
+    parser.add_argument("--verbose", "-v", default=False, action="store_true",
                         help="Print all metrics.")
-    parser.add_argument("--counts", "-c", default=0, action="count",
+    parser.add_argument("--counts", "-c", default=False, action="store_true",
                         help="Print raw counts of correct/gold/system/aligned words instead of prec/rec/F1 for all metrics.")
     args = parser.parse_args()
 
