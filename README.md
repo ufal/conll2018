@@ -1,12 +1,5 @@
-# UD End-to-End Parsing
+# CoNLL 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies
 
-## Proposal
+This is an internal repository for the organizers.
 
-[The CoNLL 2018 Shared Task Proposal](proposal/Proposal.odt)
-
-## Collaborating
-
-If you want to discuss the proposal, please use Github Issues.
-
-If you want to perform a commit, either send us a pull request, or ask us for write
-access to the repository (straka at ufal.mff.cuni.cz).
+Please visit the [shared task website](http://universaldependencies.org/conll18/).
