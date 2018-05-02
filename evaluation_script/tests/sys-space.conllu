@@ -13,8 +13,8 @@
 11	me	I	PRON	PRP	Case=Acc|Number=Sing|Person=1|PronType=Prs	7	nmod	_	_
 
 # sent_id = 2
-# text = I'm not sleepy
+# text = I'm not sleepy
 1	I	I	PRON	PRP	Case=Nom|Number=Sing|Person=1|PronType=Prs	3	nsubj	_	SpaceAfter=No
 2	'm	be	AUX	VBP	Mood=Ind|Tense=Pres|VerbForm=Fin	3	cop	_	_
-3	not sleepy	not_sleepy	PART	RB	_	0	root	_	Trying a token with space
+3	not sleepy	not_sleepy	PART	RB	_	0	root	_	Trying a token with space
 

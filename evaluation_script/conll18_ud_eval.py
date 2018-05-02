@@ -16,6 +16,9 @@
 # - [12 Apr 2018] Version 0.9: Initial release.
 # - [19 Apr 2018] Version 1.0: Fix bug in MLAS (duplicate entries in functional_children).
 #                              Add --counts option.
+# - [02 May 2018] Version 1.1: When removing spaces to match gold and system characters,
+#                              consider all Unicode characters of category Zs instead of
+#                              just ASCII space.
 
 # Command line usage
 # ------------------
@@ -90,6 +93,7 @@ from __future__ import print_function
 import argparse
 import io
 import sys
+import unicodedata
 import unittest
 
 # CoNLL-U column names
@@ -219,8 +223,13 @@ def load_conllu(file):
             continue
 
         # Delete spaces from FORM, so gold.characters == system.characters
-        # even if one of them tokenizes the space.
-        columns[FORM] = columns[FORM].replace(" ", "")
+        # even if one of them tokenizes the space. Use any Unicode character
+        # with category Zs.
+        if sys.version_info < (3, 0) and isinstance(line, str):
+            columns[FORM] = columns[FORM].decode("utf-8")
+        columns[FORM] = "".join(filter(lambda c: unicodedata.category(c) != "Zs", columns[FORM]))
+        if sys.version_info < (3, 0) and isinstance(line, str):
+            columns[FORM] = columns[FORM].encode("utf-8")
         if not columns[FORM]:
             raise UDError("There is an empty FORM in the CoNLL-U file")
 
