@@ -15,8 +15,24 @@ from __future__ import print_function
 import argparse
 import json
 import sys
+import unittest
 
 from conll18_ud_eval import UDError, load_conllu_file, evaluate
+
+def round_score(score):
+    return round(score * 100. / 5.) * 5. / 100.
+
+class TestRoundScore(unittest.TestCase):
+    def test_round_score(self):
+        self.assertEqual(round_score(0.874999), 0.85)
+        self.assertEqual(round_score(0.875001), 0.9)
+        self.assertEqual(round_score(0.924), 0.9)
+        self.assertEqual(round_score(0.924999), 0.9)
+        self.assertEqual(round_score(0.925001), 0.95)
+        self.assertEqual(round_score(0.93), 0.95)
+        self.assertEqual(round_score(0.974999), 0.95)
+        self.assertEqual(round_score(0.975001), 1.0)
+
 
 def main():
     # Parse arguments
@@ -81,7 +97,10 @@ def main():
             continue
 
         # Generate output metrics and compute sum
-        results.append((ltcode+"-Status", "OK: Evaluated non-zero LAS F1 score" if evaluation["LAS"].f1 > 0 else "Error: Evaluated zero LAS F1 score"))
+        results.append((ltcode+"-Status", "OK: Result F1 scores rounded to 5% are LAS={:.0f}% MLAS={:.0f}% BLEX={:.0f}%".format(
+            100 * round_score(evaluation["LAS"].f1),
+            100 * round_score(evaluation["MLAS"].f1),
+            100 * round_score(evaluation["BLEX"].f1))))
 
         for metric in metrics:
             results.append((ltcode+"-"+metric+"-F1", "{:.2f}".format(100 * evaluation[metric].f1)))
@@ -105,7 +124,7 @@ def main():
             continue
 
         ltcode = key[:-len("-Status")]
-        print("{:13} LAS:{:6.2f} MLAS:{:6.2f} BLEX:{:6.2f} ({})".format(
+        print("{:13} LAS={:6.2f}% MLAS={:6.2f}% BLEX={:6.2f}% ({})".format(
             ltcode,
             100 * results_las.get(ltcode, 0.), 100 * results_mlas.get(ltcode, 0.), 100 * results_blex.get(ltcode, 0.),
             value), file=sys.stdout)
