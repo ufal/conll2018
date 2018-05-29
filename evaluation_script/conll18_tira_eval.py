@@ -55,7 +55,7 @@ def main():
     for entry in metadata:
         treebanks += 1
 
-        ltcode, goldfile, outfile = entry['ltcode'], entry['goldfile'], entry['outfile']
+        ltcode, goldfile, outfile = "_".join((entry['lcode'], entry['tcode'])), entry['goldfile'], entry['outfile']
 
         # Load gold data
         try:
