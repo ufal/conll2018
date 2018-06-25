@@ -1,6 +1,6 @@
 evaluators {
   evaluatorId: "evaluator1"
-  command: "python conll18_tira_eval.py $inputDataset $inputRun $outputDir"
+  command: "python3 conll18_tira_eval.py $inputDataset $inputRun $outputDir"
   workingDirectory: "/home/conll17-master/evaluation_script_2018"
   measures: ""
   measureKeys: "total-LAS-F1"
