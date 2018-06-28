@@ -1,6 +1,6 @@
 af_afribooms afrikaans-afribooms
-grc_proiel ancient_greek-proiel
 grc_perseus ancient_greek-perseus
+grc_proiel ancient_greek-proiel
 ar_padt arabic-padt
 hy_armtdp armenian-armtdp
 eu_bdt basque-bdt
@@ -9,9 +9,9 @@ bxr_bdt buryat-bdt
 ca_ancora catalan-ancora
 zh_gsd chinese-gsd
 hr_set croatian-set
+cs_pdt czech-pdt
 cs_cac czech-cac
 cs_fictree czech-fictree
-cs_pdt czech-pdt
 da_ddt danish-ddt
 nl_alpino dutch-alpino
 nl_lassysmall dutch-lassysmall
@@ -19,8 +19,8 @@ en_ewt english-ewt
 en_gum english-gum
 en_lines english-lines
 et_edt estonian-edt
-fi_ftb finnish-ftb
 fi_tdt finnish-tdt
+fi_ftb finnish-ftb
 fr_gsd french-gsd
 fr_sequoia french-sequoia
 fr_spoken french-spoken
@@ -41,8 +41,8 @@ kk_ktb kazakh-ktb
 ko_gsd korean-gsd
 ko_kaist korean-kaist
 kmr_mg kurmanji-mg
-la_ittb latin-ittb
 la_proiel latin-proiel
+la_ittb latin-ittb
 la_perseus latin-perseus
 lv_lvtb latvian-lvtb
 sme_giella north_sami-giella
@@ -63,8 +63,8 @@ sk_snk slovak-snk
 sl_ssj slovenian-ssj
 sl_sst slovenian-sst
 es_ancora spanish-ancora
-sv_lines swedish-lines
 sv_talbanken swedish-talbanken
+sv_lines swedish-lines
 tr_imst turkish-imst
 uk_iu ukrainian-iu
 hsb_ufal upper_sorbian-ufal
