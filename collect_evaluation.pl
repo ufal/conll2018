@@ -68,6 +68,7 @@ my %teams =
     'SParse' => {'city' => 'İstanbul'},
     'ONLP-lab' => {'city' => "Ra'anana"},
     'HUJI' => {'city' => 'Yerushalayim'},
+    'SLT-Interactions' => {'city' => 'Bengaluru'},
     'HIT-SCIR-18' => {'city' => 'Harbin'},
     'Fudan' => {'city' => 'Shanghai'},
     'LeisureX' => {'city' => 'Shanghai'},
