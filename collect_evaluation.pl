@@ -31,18 +31,18 @@ GetOptions
 
 
 
-my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt hy_armtdp eu_bdt br_keb bg_btb bxr_bdt ca_ancora hr_set cs_cac cs_fictree cs_pdt cs_pud
-                da_ddt nl_alpino nl_lassysmall en_ewt en_gum en_lines en_pud et_edt fo_oft fi_ftb fi_pud fi_tdt fr_gsd fr_sequoia fr_spoken
-                gl_ctg gl_treegal de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd ga_idt it_isdt it_postwita ja_gsd ja_modern
-                kk_ktb ko_gsd ko_kaist kmr_mg la_ittb la_perseus la_proiel lv_lvtb pcm_nsc sme_giella no_bokmaal no_nynorsk no_nynorsklia
+my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_ancora hr_set cs_cac cs_fictree cs_pdt
+                da_ddt nl_alpino nl_lassysmall en_ewt en_gum en_lines et_edt fi_ftb fi_tdt fr_gsd fr_sequoia fr_spoken
+                gl_ctg gl_treegal de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd ga_idt it_isdt it_postwita ja_gsd
+                ko_gsd ko_kaist la_ittb la_perseus la_proiel lv_lvtb sme_giella no_bokmaal no_nynorsk no_nynorsklia
                 fro_srcmf cu_proiel fa_seraji pl_lfg pl_sz pt_bosque ro_rrt ru_syntagrus ru_taiga sr_set sk_snk sl_ssj sl_sst es_ancora
-                sv_lines sv_pud sv_talbanken th_pud tr_imst uk_iu hsb_ufal ur_udtb ug_udt vi_vtb);
-my @smltbk = qw(fr_partut ga gl_treegal kk la sl_sst ug uk);
-my @pudtbk = qw(ar_pud cs_pud de_pud en_pud es_pud fi_pud fr_pud hi_pud it_pud ja_pud pt_pud ru_pud sv_pud tr_pud);
-my @surtbk = qw(bxr hsb kmr sme);
+                sv_lines sv_talbanken tr_imst uk_iu ur_udtb ug_udt vi_vtb);
+my @smltbk = qw(br_keb bxr_bdt fo_oft hsb_ufal hy_armtdp kk_ktb kmr_mg pcm_nsc th_pud);
+my @pudtbk = qw(cs_pud en_pud fi_pud ja_modern sv_pud);
+my @surtbk = ();
 my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
-# Sanity check: There are 81 treebanks in total.
-die('Expected 81 treebanks, found '.scalar(@alltbk)) if (scalar(@alltbk) != 81);
+# Sanity check: There are 82 treebanks in total.
+die('Expected 82 treebanks, found '.scalar(@alltbk)) if (scalar(@alltbk) != 82);
 # If takeruns is present, it is the sequence of system runs (not evaluation runs) that should be combined.
 # Otherwise, we should take the last complete run (all files have nonzero scores) of the primary system.
 # If no run is complete and no combination is defined, should we take the best-scoring run of the primary system?
