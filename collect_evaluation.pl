@@ -72,7 +72,7 @@ my %teams =
     'Fudan' => {'city' => 'Shanghai'},
     'LeisureX' => {'city' => 'Shanghai'},
     'Phoenix' => {'city' => 'Shanghai'},
-    'UniMelb' => {'city' => 'Melbourne'}
+    'UniMelb' => {'city' => 'Melbourne', 'primary' => 'software1', 'takeruns' => ['2018-06-28-17-22-34']} # evaluator run 2018-06-29-01-28-54
 );
 # Some teams have multiple virtual machines.
 my %secondary =
