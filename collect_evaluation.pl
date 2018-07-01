@@ -46,7 +46,30 @@ die('Expected 81 treebanks, found '.scalar(@alltbk)) if (scalar(@alltbk) != 81);
 # In any case, the primary system must be defined. We shall not just take the best-scoring one.
 my %teams =
 (
-    'MQuni'       => {'city' => 'Sydney', 'primary' => 'software2', 'takeruns' => ['2017-05-09-20-35-48']}  # evaluator run: 2017-05-10-05-14-53
+    'Stanford-18' => {'city' => 'Stanford'},
+    'IBM-NY' => {'city' => 'Yorktown Heights'},
+    'ParisNLP-18' => {'city' => 'Paris'},
+    'CEA-LIST' => {'city' => 'Paris'},
+    'LATTICE-18' => {'city' => 'Paris'},
+    'conll18-baseline' => {'city' => 'Praha'},
+    'UDPipe-Future' => {'city' => 'Praha'},
+    'CUNI-x-ling' => {'city' => 'Praha'},
+    'ICS-PAS' => {'city' => 'Warszawa'},
+    'Uppsala-18' => {'city' => 'Uppsala'},
+    'TurkuNLP-18' => {'city' => 'Turku'},
+    'NLP-Cube' => {'city' => 'București'},
+    'SagTeam' => {'city' => 'Moskva'},
+    'ArmParser' => {'city' => 'Yerevan'},
+    'BOUN' => {'city' => 'İstanbul'},
+    'KParse' => {'city' => 'İstanbul'},
+    'SParse' => {'city' => 'İstanbul'},
+    'ONLP-lab' => {'city' => "Ra'anana"},
+    'HUJI' => {'city' => 'Yerushalayim'},
+    'HIT-SCIR-18' => {'city' => 'Harbin'},
+    'Fudan' => {'city' => 'Shanghai'},
+    'LeisureX' => {'city' => 'Shanghai'},
+    'Phoenix' => {'city' => 'Shanghai'},
+    'UniMelb' => {'city' => 'Melbourne'}
 );
 # Some teams have multiple virtual machines.
 my %secondary =
