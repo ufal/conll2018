@@ -151,10 +151,10 @@ my %secondary =
 
 
 # The output of the test runs is mounted in the master VM at this point:
-my $testpath_tira = '/media/conll17-ud-test-2017-05-09';
-my $testpath_ufal1 = '/net/work/people/zeman/unidep/conll2017-test-runs-v1/conll17-ud-test-2017-05-09';
-my $testpath_ufal2 = '/net/work/people/zeman/unidep/conll2017-test-runs-v2/conll17-ud-test-2017-05-09';
-my $testpath_ufal3 = '/net/work/people/zeman/unidep/conll2017-test-runs-v3/conll17-ud-test-2017-05-09';
+my $testpath_tira = '/media/conll18-ud-test-2018-05-06';
+my $testpath_ufal1 = '/net/work/people/zeman/unidep/conll2017-test-runs-v1/conll18-ud-test-2018-05-06';
+my $testpath_ufal2 = '/net/work/people/zeman/unidep/conll2017-test-runs-v2/conll18-ud-test-2018-05-06';
+my $testpath_ufal3 = '/net/work/people/zeman/unidep/conll2017-test-runs-v3/conll18-ud-test-2018-05-06';
 my $testpath_dan  = 'C:/Users/Dan/Documents/Lingvistika/Projekty/universal-dependencies/conll2017-test-runs/filtered-eruns';
 my $testpath;
 # Are we running on Dan's laptop?
