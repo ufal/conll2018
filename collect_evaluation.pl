@@ -31,9 +31,12 @@ GetOptions
 
 
 
-my @bigtbk = qw(ar bg ca cs cs_cac cs_cltt cu da de el en en_lines en_partut es es_ancora et eu fa fi fi_ftb fr fr_sequoia gl got grc grc_proiel
-                he hi hr hu id it ja ko la_ittb la_proiel lv nl nl_lassysmall no_bokmaal no_nynorsk pl pt pt_br ro ru ru_syntagrus sk sl
-                sv sv_lines tr ur vi zh);
+my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt hy_armtdp eu_bdt br_keb bg_btb bxr_bdt ca_ancora hr_set cs_cac cs_fictree cs_pdt cs_pud
+                da_ddt nl_alpino nl_lassysmall en_ewt en_gum en_lines en_pud et_edt fo_oft fi_ftb fi_pud fi_tdt fr_gsd fr_sequoia fr_spoken
+                gl_ctg gl_treegal de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd ga_idt it_isdt it_postwita ja_gsd ja_modern
+                kk_ktb ko_gsd ko_kaist kmr_mg la_ittb la_perseus la_proiel lv_lvtb pcm_nsc sme_giella no_bokmaal no_nynorsk no_nynorsklia
+                fro_srcmf cu_proiel fa_seraji pl_lfg pl_sz pt_bosque ro_rrt ru_syntagrus ru_taiga sr_set sk_snk sl_ssj sl_sst es_ancora
+                sv_lines sv_pud sv_talbanken th_pud tr_imst uk_iu hsb_ufal ur_udtb ug_udt vi_vtb);
 my @smltbk = qw(fr_partut ga gl_treegal kk la sl_sst ug uk);
 my @pudtbk = qw(ar_pud cs_pud de_pud en_pud es_pud fi_pud fr_pud hi_pud it_pud ja_pud pt_pud ru_pud sv_pud tr_pud);
 my @surtbk = qw(bxr hsb kmr sme);
