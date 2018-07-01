@@ -61,7 +61,7 @@ my %teams =
     'SagTeam' => {'city' => 'Moskva'},
     'ArmParser' => {'city' => 'Yerevan'},
     'BOUN' => {'city' => 'İstanbul'},
-    'KParse' => {'city' => 'İstanbul', 'primary' => 'software1', 'takeruns' => ['2018-07-01-09-16-07', '2018-06-29-00-50-02', '2018-07-01-15-05-56']}, # evaluator runs: 2018-07-01-14-44-14, 2018-07-01-06-15-52, 2018-07-01-18-39-38
+    'KParse' => {'city' => 'İstanbul', 'primary' => 'software1', 'takeruns' => ['2018-07-01-15-05-56', '2018-07-01-09-16-07', '2018-06-29-00-50-02']}, # evaluator runs: 2018-07-01-14-44-14, 2018-07-01-06-15-52, 2018-07-01-18-39-38
     'SParse' => {'city' => 'İstanbul'},
     'ONLP-lab' => {'city' => "Ra'anana"},
     'HUJI' => {'city' => 'Yerushalayim'},
