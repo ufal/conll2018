@@ -59,7 +59,7 @@ my %teams =
     'CUNI-x-ling' => {'city' => 'Praha'},
     'ICS-PAS' => {'city' => 'Warszawa'},
     'Uppsala-18' => {'city' => 'Uppsala'},
-    'TurkuNLP-18' => {'city' => 'Turku'},
+    'TurkuNLP-18' => {'city' => 'Turku', 'primary' => 'software1', 'takeruns' => ['2018-07-01-20-49-29', '2018-07-01-12-19-31', '2018-06-28-19-30-38', '2018-06-28-09-42-55', '2018-06-26-00-03-07']}, # evaluator runs: 2018-07-01-21-02-28, 2018-07-01-12-37-54, 2018-06-29-00-07-40, 2018-06-28-18-59-56, 2018-06-28-00-46-12
     'NLP-Cube' => {'city' => 'București'},
     'SagTeam' => {'city' => 'Moskva'},
     'ArmParser' => {'city' => 'Yerevan'},
