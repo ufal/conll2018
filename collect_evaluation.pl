@@ -81,7 +81,7 @@ my %teams =
     'SLT-Interactions' => {'city' => 'Bengaluru'},
     'HIT-SCIR-18' => {'city' => 'Harbin', 'printname' => 'HIT-SCIR'},
     'AntNLP' => {'city' => 'Shanghai'},
-    'Fudan' => {'city' => 'Shanghai'},
+    'Fudan' => {'city' => 'Shanghai', 'primary' => 'software5'},
     'LeisureX' => {'city' => 'Shanghai'},
     'Phoenix' => {'city' => 'Shanghai'},
     'UniMelb' => {'city' => 'Melbourne', 'primary' => 'software1', 'takeruns' => ['2018-06-28-17-22-34']} # evaluator run 2018-06-29-01-28-54
