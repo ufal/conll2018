@@ -42,7 +42,8 @@ my @pudtbk = qw(cs_pud en_pud fi_pud ja_modern sv_pud);
 my @surtbk = ();
 my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
 # Sanity check: There are 82 treebanks in total.
-die('Expected 82 treebanks, found '.scalar(@alltbk)) if (scalar(@alltbk) != 82);
+my $ntreebanks = 82;
+die("Expected $ntreebanks treebanks, found ".scalar(@alltbk)) if (scalar(@alltbk) != $ntreebanks);
 # If takeruns is present, it is the sequence of system runs (not evaluation runs) that should be combined.
 # Otherwise, we should take the last complete run (all files have nonzero scores) of the primary system.
 # If no run is complete and no combination is defined, should we take the best-scoring run of the primary system?
@@ -147,6 +148,10 @@ foreach my $result (@results)
 # Combine runs where applicable.
 foreach my $team (keys(%teams))
 {
+    if (!exists($teams{$team}{takeruns}))
+    {
+        take_all_runs_of_one_system($teams{$team}, @results);
+    }
     if (exists($teams{$team}{takeruns}) && scalar(@{$teams{$team}{takeruns}}) > 1)
     {
         my $combination = combine_runs($teams{$team}{takeruns}, \%srun2erun, \@alltbk);
@@ -445,7 +450,9 @@ sub read_prototext
 
 #------------------------------------------------------------------------------
 # Combines evaluations of multiple system runs and creates a new virtual
-# evaluation run.
+# evaluation run. Runs are considered in the order in which they appear on the
+# input list. For every test set, the first output with non-zero -LAS-F1 score
+# is taken, and the subsequent outputs (if any) are ignored.
 #------------------------------------------------------------------------------
 sub combine_runs
 {
@@ -522,13 +529,45 @@ sub combine_runs
     # Recompute the macro average scores.
     # We cannot take the number of sets from scalar(grep {m/^(.+)-LAS-F1$/ && $1 ne 'total'} (keys(%combination)));
     # If the system failed to produce some of the outputs, we would be averaging only the good outputs!
-    my $nsets = 81; ###!!! THIS MAY FAIL IF WE USE THIS SCRIPT FOR ANOTHER TASK IN THE FUTURE.
+    my $nsets = $ntreebanks; ###!!! GLOBAL VARIABLE; THIS MAY FAIL IF WE USE THIS SCRIPT FOR ANOTHER TASK IN THE FUTURE.
     die if ($nsets < 1);
     foreach my $key (keys(%sum))
     {
         $combination{"total-$key"} = $sum{$key}/$nsets;
     }
     return \%combination;
+}
+
+
+
+#------------------------------------------------------------------------------
+# If there is no manually set list of runs to take, take all runs of one
+# software. Preferably software1.
+#------------------------------------------------------------------------------
+sub take_all_runs_of_one_system
+{
+    my $team = shift;
+    my $primary = 'software1';
+    if (exists($teams{$team}{primary}))
+    {
+        $primary = $teams{$team}{primary};
+    }
+    my @results = @_;
+    # Select all runs of the given team and software.
+    ###!!! WARNING: There might be only runs of a software that is not considered primary.
+    @results = grep {$_->{team} eq $team} (@results);
+    my $n_runs_team = scalar(@results);
+    @results = grep {$_->{team} eq $team && $_->{software} eq $primary} (@results);
+    my $n_runs_team_primary = scalar(@results);
+    if ($n_runs_team_primary == 0)
+    {
+        print STDERR ("WARNING: team $team has $n_runs_team but no runs of the primary $primary!\n");
+    }
+    # Order the runs chronologically, most recent run first.
+    @results = sort {$b->{srun} cmp $a->{srun}} (@results);
+    # Set the takeruns attribute of the team to the list of names of runs we just found.
+    my @sruns = map {$_->{srun}} (@results);
+    $teams{$team}{takeruns} = \@sruns;
 }
 
 
@@ -867,7 +906,7 @@ sub print_table
             $tag = ' [OK]';
             my @keys = grep {m/-LAS-F1$/} (keys(%{$result}));
             my $n = scalar(@keys)-1; # subtracting the macro average
-            if ($n < 81)
+            if ($n < $nteebanks) ###!!! GLOBAL VARIABLE
             {
                 $tag = " [$n]";
             }
