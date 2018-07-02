@@ -37,13 +37,14 @@ GetOptions
 
 my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_ancora hr_set cs_cac cs_fictree cs_pdt
                 da_ddt nl_alpino nl_lassysmall en_ewt en_gum en_lines et_edt fi_ftb fi_tdt fr_gsd fr_sequoia fr_spoken
-                gl_ctg gl_treegal de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd ga_idt it_isdt it_postwita ja_gsd
-                ko_gsd ko_kaist la_ittb la_perseus la_proiel lv_lvtb sme_giella no_bokmaal no_nynorsk no_nynorsklia
-                fro_srcmf cu_proiel fa_seraji pl_lfg pl_sz pt_bosque ro_rrt ru_syntagrus ru_taiga sr_set sk_snk sl_ssj sl_sst es_ancora
+                gl_ctg de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd it_isdt it_postwita ja_gsd
+                ko_gsd ko_kaist la_ittb la_proiel lv_lvtb no_bokmaal no_nynorsk
+                fro_srcmf cu_proiel fa_seraji pl_lfg pl_sz pt_bosque ro_rrt ru_syntagrus sr_set sk_snk sl_ssj es_ancora
                 sv_lines sv_talbanken tr_imst uk_iu ur_udtb ug_udt vi_vtb);
-my @smltbk = qw(bxr_bdt hsb_ufal hy_armtdp kk_ktb kmr_mg);
+my @smltbk = qw(gl_treegal ga_idt la_perseus sme_giella no_nynorsklia ru_taiga sl_sst);
 my @pudtbk = qw(cs_pud en_pud fi_pud ja_modern sv_pud);
-my @surtbk = qw(br_keb fo_oft pcm_nsc th_pud);
+my @surtbk = qw(bxr_bdt hsb_ufal hy_armtdp kk_ktb kmr_mg # sample training data
+                br_keb fo_oft pcm_nsc th_pud);           # no training data
 my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
@@ -204,13 +205,14 @@ if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPO
         "These are languages for which there exists at least one big training treebank. ".
         "However, these test sets have been produced separately and their domain may differ.";
     my $smallexpl = "Macro-average $coremetric of the ".scalar(@smltbk)." small treebanks: ".join(', ', @smltbk).'. '.
-        "These treebanks lack development data and some of them have very little training data (especially Uyghur and Kazakh).";
-    my $surexpl = "Macro-average $coremetric of the ".scalar(@surtbk)." surprise language treebanks: ".join(', ', @surtbk).'.';
+        "These treebanks lack development data but still have some reasonable training data.";
+    my $surexpl = "Macro-average $coremetric of the ".scalar(@surtbk)." low-resource language treebanks: ".join(', ', @surtbk).'. '.
+        "These languages have tiny sample data, or no training data at all.";
     print_table_markdown("## All treebanks", "alltreebanks-$coremetric", @results);
     print_table_markdown("## Big treebanks only\n\n$bigexpl", "bigtreebanks-$coremetric", @results);
     print_table_markdown("## PUD treebanks only\n\n$pudexpl", "pudtreebanks-$coremetric", @results);
     print_table_markdown("## Small treebanks only\n\n$smallexpl", "smalltreebanks-$coremetric", @results);
-    print_table_markdown("## Surprise languages only\n\n$surexpl", "surtreebanks-$coremetric", @results);
+    print_table_markdown("## Low-resource languages only\n\n$surexpl", "surtreebanks-$coremetric", @results);
     print("## Per treebank $coremetric\n\n\n\n");
     foreach my $treebank (sort(@alltbk))
     {
