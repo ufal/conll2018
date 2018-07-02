@@ -621,11 +621,11 @@ sub remove_secondary_runs
                 unless ($primary eq 'any')
                 {
                     @results = grep {$_->{team} ne $team || $_->{software} eq $primary} (@results);
-                }
-                # Sanity check: there must be at least one run of the primary system.
-                if (!grep {$_->{team} eq $team && $_->{software} eq $primary} (@results))
-                {
-                    die("Team '$team': did not find any runs of the primary system '$primary'");
+                    # Sanity check: there must be at least one run of the primary system.
+                    if (!grep {$_->{team} eq $team && $_->{software} eq $primary} (@results))
+                    {
+                        die("Team '$team': did not find any runs of the primary system '$primary'");
+                    }
                 }
             }
             if (exists($teams{$team}{takeruns}))
