@@ -28,6 +28,10 @@ GetOptions
     'cocopy' => \$copy_conllu_files,
     'latex' => \$latex
 );
+# Metrics:
+# total-LAS-F1, -MLAS-, -BLEX-, -CLAS-, -UAS-, -UPOS-, -XPOS-, -UFeats-, -AllTags-, -Lemmas-, -Words-, -Tokens-, -Sentences-
+# pertreebank-* (ditto)
+# ranktreebanks, ranktreebanks-CLAS, ranktreebanks-both
 
 
 
@@ -185,7 +189,7 @@ if ($copy_conllu_files)
 # (in the future they should rather look into the @alltbk list).
 # Print the results.
 # Print them in MarkDown if the long, per-treebank breakdown is requested.
-if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
+if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
     my $coremetric = $1;
     add_average("alltreebanks-$coremetric", $coremetric, \@alltbk, \@results);
@@ -1014,7 +1018,7 @@ sub print_table
                 my $lemmas = $result->{'total-Lemmas-F1'};
                 my $upos = $result->{'total-UPOS-F1'};
                 my $xpos = $result->{'total-XPOS-F1'};
-                my $feat = $result->{'total-Feats-F1'};
+                my $feat = $result->{'total-UFeats-F1'};
                 my $alltags = $result->{'total-AllTags-F1'}; # Includes XPOS, which many systems ignore. I don't know if it includes lemmas.
                 printf("%4s & %s & %5.2f & %5.2f & %5.2f \\\\\\hline\n", $rank, $name, $upos, $feat, $lemmas);
             }
