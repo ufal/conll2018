@@ -152,6 +152,11 @@ foreach my $team (keys(%teams))
     {
         take_all_runs_of_one_system($team, @results);
     }
+    else
+    {
+        my $n = scalar(@{$teams{$team}{takeruns}});
+        print STDERR ("For team $team there is hard-coded $teams{$team}{primary} as primary, $n runs listed to look for.\n\n");
+    }
     if (exists($teams{$team}{takeruns}) && scalar(@{$teams{$team}{takeruns}}) > 1)
     {
         my $combination = combine_runs($teams{$team}{takeruns}, \%srun2erun, \@alltbk);
@@ -573,7 +578,7 @@ sub take_all_runs_of_one_system
         $n_runs_team_primary = scalar(@presults);
     }
     # Set the takeruns attribute of the team to the list of names of runs we just found.
-    print STDERR ("For team $team setting $primary as primary, found $n_runs_team_primary runs.\n");
+    print STDERR ("For team $team setting $primary as primary, found $n_runs_team_primary runs.\n\n");
     my @sruns = map {$_->{srun}} (@presults);
     $teams{$team}{takeruns} = \@sruns;
 }
