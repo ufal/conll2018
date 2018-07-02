@@ -43,8 +43,8 @@ my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_anc
                 sv_lines sv_talbanken tr_imst uk_iu ur_udtb ug_udt vi_vtb);
 my @smltbk = qw(gl_treegal ga_idt la_perseus sme_giella no_nynorsklia ru_taiga sl_sst);
 my @pudtbk = qw(cs_pud en_pud fi_pud ja_modern sv_pud);
-my @surtbk = qw(bxr_bdt hsb_ufal hy_armtdp kk_ktb kmr_mg # sample training data
-                br_keb fo_oft pcm_nsc th_pud);           # no training data
+my @surtbk = qw(bxr_bdt hsb_ufal hy_armtdp kk_ktb kmr_mg
+                br_keb fo_oft pcm_nsc th_pud);
 my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
