@@ -570,8 +570,10 @@ sub take_all_runs_of_one_system
         print STDERR ("WARNING: changing primary to $primary.\n");
         $teams{$team}{primary} = $primary;
         @presults = grep {$_->{software} eq $primary} (@results);
+        $n_runs_team_primary = scalar(@presults);
     }
     # Set the takeruns attribute of the team to the list of names of runs we just found.
+    print STDERR ("For team $team setting $primary as primary, found $n_runs_team_primary runs.\n");
     my @sruns = map {$_->{srun}} (@presults);
     $teams{$team}{takeruns} = \@sruns;
 }
