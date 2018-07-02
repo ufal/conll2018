@@ -912,7 +912,7 @@ sub print_table
             $tag = ' [OK]';
             my @keys = grep {m/-LAS-F1$/} (keys(%{$result}));
             my $n = scalar(@keys)-1; # subtracting the macro average
-            if ($n < $nteebanks) ###!!! GLOBAL VARIABLE
+            if ($n < $ntreebanks) ###!!! GLOBAL VARIABLE
             {
                 $tag = " [$n]";
             }
