@@ -525,7 +525,7 @@ sub combine_runs
         $from_here{jsets} = join(', ', @{$from_here{sets}});
         $combination{runtime} += $erun->{runtime};
     }
-    print STDERR ("\tTaking ", join('; ', map {"$_->{nsets} files from $_->{erun} ($_->{jsets})"} (@what_from_where)), "\n\n");
+    print STDERR ("\tTaking ", join(";\n\t       ", map {"$_->{nsets} files from $_->{erun} ($_->{jsets})"} (@what_from_where)), "\n\n");
     # Recompute the macro average scores.
     # We cannot take the number of sets from scalar(grep {m/^(.+)-LAS-F1$/ && $1 ne 'total'} (keys(%combination)));
     # If the system failed to produce some of the outputs, we would be averaging only the good outputs!
