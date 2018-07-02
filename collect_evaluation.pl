@@ -37,9 +37,9 @@ my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_anc
                 ko_gsd ko_kaist la_ittb la_perseus la_proiel lv_lvtb sme_giella no_bokmaal no_nynorsk no_nynorsklia
                 fro_srcmf cu_proiel fa_seraji pl_lfg pl_sz pt_bosque ro_rrt ru_syntagrus ru_taiga sr_set sk_snk sl_ssj sl_sst es_ancora
                 sv_lines sv_talbanken tr_imst uk_iu ur_udtb ug_udt vi_vtb);
-my @smltbk = qw(br_keb bxr_bdt fo_oft hsb_ufal hy_armtdp kk_ktb kmr_mg pcm_nsc th_pud);
+my @smltbk = qw(bxr_bdt hsb_ufal hy_armtdp kk_ktb kmr_mg);
 my @pudtbk = qw(cs_pud en_pud fi_pud ja_modern sv_pud);
-my @surtbk = ();
+my @surtbk = qw(br_keb fo_oft pcm_nsc th_pud);
 my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
@@ -185,7 +185,7 @@ if ($copy_conllu_files)
 # (in the future they should rather look into the @alltbk list).
 # Print the results.
 # Print them in MarkDown if the long, per-treebank breakdown is requested.
-if ($metric =~ m/^pertreebank-(CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
+if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
     my $coremetric = $1;
     add_average("alltreebanks-$coremetric", $coremetric, \@alltbk, \@results);
