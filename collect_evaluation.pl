@@ -548,25 +548,31 @@ sub take_all_runs_of_one_system
 {
     my $team = shift;
     my @results = @_;
+    # Keep only runs of the given team.
+    @results = grep {$_->{team} eq $team} (@results);
+    my $n_runs_team = scalar(@results);
+    return if ($n_runs_team==0);
+    # Order the runs chronologically, most recent run first.
+    @results = sort {$b->{srun} cmp $a->{srun}} (@results);
     my $primary = 'software1';
     if (exists($teams{$team}{primary}))
     {
         $primary = $teams{$team}{primary};
     }
-    # Select all runs of the given team and software.
-    ###!!! WARNING: There might be only runs of a software that is not considered primary.
-    @results = grep {$_->{team} eq $team} (@results);
-    my $n_runs_team = scalar(@results);
-    @results = grep {$_->{team} eq $team && $_->{software} eq $primary} (@results);
-    my $n_runs_team_primary = scalar(@results);
+    # If there are no runs of the primary software but there are runs of other software,
+    # select the software of the most recent run as primary.
+    my @presults = grep {$_->{software} eq $primary} (@results);
+    my $n_runs_team_primary = scalar(@presults);
     if ($n_runs_team > 0 && $n_runs_team_primary == 0)
     {
         print STDERR ("WARNING: team $team has $n_runs_team but no runs of the primary $primary!\n");
+        $primary = $results[0]{software};
+        print STDERR ("WARNING: changing primary to $primary.\n");
+        $teams{$team}{primary} = $primary;
+        @presults = grep {$_->{software} eq $primary} (@results);
     }
-    # Order the runs chronologically, most recent run first.
-    @results = sort {$b->{srun} cmp $a->{srun}} (@results);
     # Set the takeruns attribute of the team to the list of names of runs we just found.
-    my @sruns = map {$_->{srun}} (@results);
+    my @sruns = map {$_->{srun}} (@presults);
     $teams{$team}{takeruns} = \@sruns;
 }
 
