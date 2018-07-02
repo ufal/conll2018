@@ -146,7 +146,7 @@ foreach my $result (@results)
     }
 }
 # Combine runs where applicable.
-foreach my $team (keys(%teams))
+foreach my $team (sort(keys(%teams))) # sorting just because of debugging messages
 {
     if (!exists($teams{$team}{takeruns}))
     {
