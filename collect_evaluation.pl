@@ -559,7 +559,7 @@ sub take_all_runs_of_one_system
     my $n_runs_team = scalar(@results);
     @results = grep {$_->{team} eq $team && $_->{software} eq $primary} (@results);
     my $n_runs_team_primary = scalar(@results);
-    if ($n_runs_team_primary == 0)
+    if ($n_runs_team > 0 && $n_runs_team_primary == 0)
     {
         print STDERR ("WARNING: team $team has $n_runs_team but no runs of the primary $primary!\n");
     }
