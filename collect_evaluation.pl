@@ -150,7 +150,7 @@ foreach my $team (keys(%teams))
 {
     if (!exists($teams{$team}{takeruns}))
     {
-        take_all_runs_of_one_system($teams{$team}, @results);
+        take_all_runs_of_one_system($team, @results);
     }
     if (exists($teams{$team}{takeruns}) && scalar(@{$teams{$team}{takeruns}}) > 1)
     {
@@ -547,12 +547,12 @@ sub combine_runs
 sub take_all_runs_of_one_system
 {
     my $team = shift;
+    my @results = @_;
     my $primary = 'software1';
     if (exists($teams{$team}{primary}))
     {
         $primary = $teams{$team}{primary};
     }
-    my @results = @_;
     # Select all runs of the given team and software.
     ###!!! WARNING: There might be only runs of a software that is not considered primary.
     @results = grep {$_->{team} eq $team} (@results);
