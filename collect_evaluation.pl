@@ -50,7 +50,8 @@ die("Expected $ntreebanks treebanks, found ".scalar(@alltbk)) if (scalar(@alltbk
 # In any case, the primary system must be defined. We shall not just take the best-scoring one.
 my %teams =
 (
-    'Stanford-18' => {'city' => 'Stanford', 'printname' => 'Stanford'},
+    ###!!! WARNING! Stanford-18 primary software is software2 but Stanford-182 primary is software1!
+    'Stanford-18' => {'city' => 'Stanford', 'printname' => 'Stanford', 'primary' => 'any'},
     'Stanford-182' => {'city' => 'Stanford'},
     'IBM-NY' => {'city' => 'Yorktown Heights', 'printname' => 'IBM NY'},
 #    'IBM-NY' => {'city' => 'Yorktown Heights', 'printname' => 'IBM NY', 'takeruns' => ['2018-07-01-23-33-16', '2018-07-01-20-34-40', '2018-07-01-16-22-35', '2018-07-01-10-31-23', '2018-07-01-04-45-06', '2018-07-01-02-41-12', '2018-07-01-01-03-32', '2018-06-30-20-44-42', '2018-06-30-16-19-27', '2018-06-30-13-33-36', '2018-06-30-07-56-07', '2018-06-30-07-02-14', '2018-06-30-06-06-24', '2018-06-30-02-31-38', '2018-06-29-23-59-43', '2018-06-29-21-37-52', '2018-06-29-20-54-06', '2018-06-29-18-20-53', '2018-06-29-15-31-35', '2018-06-29-09-22-39', '2018-06-29-03-29-15', '2018-06-28-22-26-54', '2018-06-28-19-50-00', '2018-06-28-07-21-53', '2018-06-27-07-33-36', '2018-06-25-23-24-40',
@@ -568,7 +569,15 @@ sub take_all_runs_of_one_system
     }
     # If there are no runs of the primary software but there are runs of other software,
     # select the software of the most recent run as primary.
-    my @presults = grep {$_->{software} eq $primary} (@results);
+    my @presults;
+    if ($primary eq 'any')
+    {
+        @presults = @results;
+    }
+    else
+    {
+        @presults = grep {$_->{software} eq $primary} (@results);
+    }
     my $n_runs_team_primary = scalar(@presults);
     if ($n_runs_team > 0 && $n_runs_team_primary == 0)
     {
@@ -609,22 +618,25 @@ sub remove_secondary_runs
             {
                 my $primary = $teams{$team}{primary};
                 # Remove all runs of secondary systems of this team.
-                @results = grep {$_->{team} ne $team || $_->{software} eq $primary} (@results);
+                unless ($primary eq 'any')
+                {
+                    @results = grep {$_->{team} ne $team || $_->{software} eq $primary} (@results);
+                }
                 # Sanity check: there must be at least one run of the primary system.
                 if (!grep {$_->{team} eq $team && $_->{software} eq $primary} (@results))
                 {
                     die("Team '$team': did not find any runs of the primary system '$primary'");
                 }
-                if (exists($teams{$team}{takeruns}))
+            }
+            if (exists($teams{$team}{takeruns}))
+            {
+                # Remove all runs of the system except the one marked as final (it is not necessarily the last one time-wise).
+                my $lookforrun = join('+', @{$teams{$team}{takeruns}});
+                @results = grep {$_->{team} ne $team || $_->{srun} eq $lookforrun} (@results);
+                # Sanity check: if we defined the run we want to take, we assumed it would exist.
+                if (!grep {$_->{team} eq $team && $_->{srun} eq $lookforrun} (@results))
                 {
-                    # Remove all runs of the system except the one marked as final (it is not necessarily the last one time-wise).
-                    my $lookforrun = join('+', @{$teams{$team}{takeruns}});
-                    @results = grep {$_->{team} ne $team || $_->{srun} eq $lookforrun} (@results);
-                    # Sanity check: if we defined the run we want to take, we assumed it would exist.
-                    if (!grep {$_->{team} eq $team && $_->{srun} eq $lookforrun} (@results))
-                    {
-                        die("Team '$team', primary system '$primary': did not find requested final run '$lookforrun'");
-                    }
+                    die("Team '$team', primary system '$primary': did not find requested final run '$lookforrun'");
                 }
             }
         }
