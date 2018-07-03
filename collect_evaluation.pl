@@ -237,21 +237,23 @@ elsif ($metric eq 'ranktreebanks')
         printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{'max-LAS-F1'}, $team, $treebanks->{$key}{'avg-LAS-F1'}, sqrt($treebanks->{$key}{'var-LAS-F1'}));
     }
 }
-elsif ($metric eq 'ranktreebanks-CLAS')
+elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
-    my $treebanks = rank_treebanks(\@alltbk, \@results, 'CLAS-F1');
-    my @keys = sort {$treebanks->{$b}{'max-CLAS-F1'} <=> $treebanks->{$a}{'max-CLAS-F1'}} (keys(%{$treebanks}));
+    my $coremetric = $1;
+    my $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
+    my @keys = sort {$treebanks->{$b}{"max-$coremetric"} <=> $treebanks->{$a}{"max-$coremetric"}} (keys(%{$treebanks}));
     my $i = 0;
-    print("                      max     maxteam    avg     stdev\n");
+    my $max_teamname = get_max_length(('maxteam', map {$treebanks->{$_}{"teammax-$coremetric"}} (@keys)));
+    my $maxteam_heading = 'maxteam' . (' ' x ($max_teamname-7));
+    print("                      max     $maxteam_heading   avg     stdev\n");
     foreach my $key (@keys)
     {
         $i++;
         my $tbk = $key;
         $tbk .= ' ' x (13-length($tbk));
-        my $team = $treebanks->{$key}{'teammax-CLAS-F1'};
-        $team .= ' ' x (8-length($team));
-        printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{'max-CLAS-F1'}, $team, $treebanks->{$key}{'avg-CLAS-F1'}, sqrt($treebanks->{$key}{'var-CLAS-F1'}));
-        #printf("%2d. & %s & %5.2f & %s & %5.2f & ±%5.2f\\\\\\hline\n", $i, $tbk, $treebanks->{$key}{'max-CLAS-F1'}, $team, $treebanks->{$key}{'avg-CLAS-F1'}, sqrt($treebanks->{$key}{'var-CLAS-F1'}));
+        my $team = $treebanks->{$key}{"teammax-$coremetric"};
+        $team .= ' ' x ($max_teamname-length($team));
+        printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
     }
 }
 elsif ($metric eq 'ranktreebanks-both' && $latex)
