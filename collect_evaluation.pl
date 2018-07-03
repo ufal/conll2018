@@ -224,8 +224,9 @@ elsif ($metric eq 'ranktreebanks')
     my $treebanks = rank_treebanks(\@alltbk, \@results, 'LAS-F1');
     my @keys = sort {$treebanks->{$b}{'max-LAS-F1'} <=> $treebanks->{$a}{'max-LAS-F1'}} (keys(%{$treebanks}));
     my $i = 0;
-    print("                      max     maxteam    avg     stdev\n");
-    my $max_teamname = get_max_length(map {$treebanks->{$_}{'teammax-LAS-F1'}} (@keys));
+    my $max_teamname = get_max_length(('maxteam', map {$treebanks->{$_}{'teammax-LAS-F1'}} (@keys)));
+    my $maxteam_heading = 'maxteam' . (' ' x ($max_teamname-7));
+    print("                      max     $maxteam_heading   avg     stdev\n");
     foreach my $key (@keys)
     {
         $i++;
