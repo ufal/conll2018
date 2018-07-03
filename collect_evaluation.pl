@@ -143,6 +143,16 @@ else
 print STDERR ("Path with runs = $testpath\n");
 die if (! -d $testpath);
 my @results = read_runs($testpath);
+###!!! We will want to make the following restriction optional and parameterized!
+# Throw away all evaluation runs that started after we published the official results.
+my $n_results_total = scalar(@results);
+@results = grep {$_->{erun} lt '2018-07-2018-23-50-45'} (@results);
+my $n_results_official = scalar(@results);
+my $n_results_removed = $n_results_total - $n_results_official;
+if ($n_results_removed > 0)
+{
+    print STDERR ("WARNING: Ignoring $n_results_removed evaluation runs that were started after we published the official results.\n");
+}
 # Create a map from system run ids to corresponding evaluation runs.
 my %srun2erun;
 foreach my $result (@results)
@@ -1056,4 +1066,21 @@ sub get_max_length
         $max = $l if ($l > $max);
     }
     return $max;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Finds out the time of the last modification of a file, in seconds since the
+# beginning of the system epoch (for many systems it is 1.1.1970 0:00:00 UTC).
+#------------------------------------------------------------------------------
+sub get_file_time
+{
+    my $file = shift; # path to file
+    my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks) = stat($file);
+    # It is not clear to me whether I should use ctime (inode change time) or mtime (last modify time).
+    # Convert epoch-based seconds to universally valid time values.
+    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime($mtime);
+    my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", $year, $mon+1, $mday, $hour, $min, $sec);
+    return $timestamp;
 }
