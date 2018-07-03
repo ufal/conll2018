@@ -146,7 +146,7 @@ my @results = read_runs($testpath);
 ###!!! We will want to make the following restriction optional and parameterized!
 # Throw away all evaluation runs that started after we published the official results.
 my $n_results_total = scalar(@results);
-@results = grep {$_->{erun} lt '2018-07-2018-23-50-45'} (@results);
+@results = grep {$_->{erun} lt '2018-07-02-23-50-45'} (@results);
 my $n_results_official = scalar(@results);
 my $n_results_removed = $n_results_total - $n_results_official;
 if ($n_results_removed > 0)
