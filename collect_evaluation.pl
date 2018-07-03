@@ -225,13 +225,14 @@ elsif ($metric eq 'ranktreebanks')
     my @keys = sort {$treebanks->{$b}{'max-LAS-F1'} <=> $treebanks->{$a}{'max-LAS-F1'}} (keys(%{$treebanks}));
     my $i = 0;
     print("                      max     maxteam    avg     stdev\n");
+    my $max_teamname = get_max_length(map {$treebanks->{$_}{'teammax-LAS-F1'}} (@keys));
     foreach my $key (@keys)
     {
         $i++;
         my $tbk = $key;
         $tbk .= ' ' x (13-length($tbk));
         my $team = $treebanks->{$key}{'teammax-LAS-F1'};
-        $team .= ' ' x (8-length($team));
+        $team .= ' ' x ($max_teamname-length($team));
         printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{'max-LAS-F1'}, $team, $treebanks->{$key}{'avg-LAS-F1'}, sqrt($treebanks->{$key}{'var-LAS-F1'}));
     }
 }
@@ -1034,4 +1035,22 @@ sub print_table
             printf("%4s %s\t%s\t%$numbersize.2f%s%s\n", $rank, $name, $software, $result->{$metric}, $tag, $runs);
         }
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Figure out the necessary width of a table column. Get the maximum length of
+# a string in a sequence of strings.
+#------------------------------------------------------------------------------
+sub get_max_length
+{
+    my @strings = @_;
+    my $max = 0;
+    foreach my $string (@strings)
+    {
+        my $l = length($string);
+        $max = $l if ($l > $max);
+    }
+    return $max;
 }
