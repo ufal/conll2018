@@ -35,6 +35,13 @@ GetOptions
 
 
 
+# The output of the test runs is mounted in the master VM at this point:
+my $testpath_tira = '/media/conll18-ud-test-2018-05-06';
+my $testpath_ufal1 = '/net/work/people/zeman/unidep/conll/system-runs-2018/conll18-ud-test-2018-05-06-downloaded-2018-07-04-02-42';
+my $testpath_ufal2 = '/net/work/people/zeman/unidep/conll2017-test-runs-v2/conll18-ud-test-2018-05-06';
+my $testpath_ufal3 = '/net/work/people/zeman/unidep/conll2017-test-runs-v3/conll18-ud-test-2018-05-06';
+my $testpath_dan  = 'C:/Users/Dan/Documents/Lingvistika/Projekty/universal-dependencies/conll2017-test-runs/filtered-eruns';
+# Treebanks fall into several categories:
 my @bigtbk = qw(af_afribooms grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_ancora hr_set cs_cac cs_fictree cs_pdt
                 da_ddt nl_alpino nl_lassysmall en_ewt en_gum en_lines et_edt fi_ftb fi_tdt fr_gsd fr_sequoia fr_spoken
                 gl_ctg de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd it_isdt it_postwita ja_gsd
@@ -102,44 +109,7 @@ my %secondary =
 
 
 # The output of the test runs is mounted in the master VM at this point:
-my $testpath_tira = '/media/conll18-ud-test-2018-05-06';
-my $testpath_ufal1 = '/net/work/people/zeman/unidep/conll2017-test-runs-v1/conll18-ud-test-2018-05-06';
-my $testpath_ufal2 = '/net/work/people/zeman/unidep/conll2017-test-runs-v2/conll18-ud-test-2018-05-06';
-my $testpath_ufal3 = '/net/work/people/zeman/unidep/conll2017-test-runs-v3/conll18-ud-test-2018-05-06';
-my $testpath_dan  = 'C:/Users/Dan/Documents/Lingvistika/Projekty/universal-dependencies/conll2017-test-runs/filtered-eruns';
-my $testpath;
-# Are we running on Dan's laptop?
-if (-d $testpath_dan)
-{
-    $testpath = $testpath_dan;
-}
-# Are we running in the master virtual machine on TIRA?
-elsif (-d $testpath_tira)
-{
-    $testpath = $testpath_tira;
-}
-# OK, we must be running on ÚFAL network then. There are multiple versions of the test runs from TIRA.
-else
-{
-    # Supposing all paths are reachable, prefer the one we are currently in.
-    my $pwd = `pwd`;
-    if (-d $testpath_ufal1 && $pwd =~ m/test-runs-v1/)
-    {
-        $testpath = $testpath_ufal1;
-    }
-    elsif (-d $testpath_ufal2 && $pwd =~ m/test-runs-v2/)
-    {
-        $testpath = $testpath_ufal2;
-    }
-    elsif (-d $testpath_ufal3 && $pwd =~ m/test-runs-v3/)
-    {
-        $testpath = $testpath_ufal3;
-    }
-    else
-    {
-        $testpath = $testpath_ufal3;
-    }
-}
+my $testpath = detect_input_path();
 print STDERR ("Path with runs = $testpath\n");
 die if (! -d $testpath);
 my @results = read_runs($testpath);
@@ -345,6 +315,52 @@ else
     {
         print_table($metric, @results);
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# There are several hard-coded paths so that we do not have to type the path
+# every time we invoke the script. The hard-coded paths are in global
+# variables. This function tests the paths for existence and returns the first
+# one that exists. The global variables are set in the beginning of the script.
+#------------------------------------------------------------------------------
+sub detect_input_path
+{
+    my $testpath;
+    # Are we running on Dan's laptop?
+    if (-d $testpath_dan)
+    {
+        $testpath = $testpath_dan;
+    }
+    # Are we running in the master virtual machine on TIRA?
+    elsif (-d $testpath_tira)
+    {
+        $testpath = $testpath_tira;
+    }
+    # OK, we must be running on ÚFAL network then. There are multiple versions of the test runs from TIRA.
+    else
+    {
+        # Supposing all paths are reachable, prefer the one we are currently in.
+        my $pwd = `pwd`;
+        if (-d $testpath_ufal1 && $pwd =~ m/test-runs-v1/)
+        {
+            $testpath = $testpath_ufal1;
+        }
+        elsif (-d $testpath_ufal2 && $pwd =~ m/test-runs-v2/)
+        {
+            $testpath = $testpath_ufal2;
+        }
+        elsif (-d $testpath_ufal3 && $pwd =~ m/test-runs-v3/)
+        {
+            $testpath = $testpath_ufal3;
+        }
+        else
+        {
+            $testpath = $testpath_ufal3;
+        }
+    }
+    return $testpath;
 }
 
 
