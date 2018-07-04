@@ -342,22 +342,23 @@ sub detect_input_path
     else
     {
         # Supposing all paths are reachable, prefer the one we are currently in.
+        ###!!! At present there is just one folder at ÚFAL and it does not contain the string 'test-runs'.
         my $pwd = `pwd`;
-        if (-d $testpath_ufal1 && $pwd =~ m/test-runs-v1/)
+        if (-d $testpath_ufal1)
         {
             $testpath = $testpath_ufal1;
         }
-        elsif (-d $testpath_ufal2 && $pwd =~ m/test-runs-v2/)
-        {
-            $testpath = $testpath_ufal2;
-        }
-        elsif (-d $testpath_ufal3 && $pwd =~ m/test-runs-v3/)
-        {
-            $testpath = $testpath_ufal3;
-        }
+#        elsif (-d $testpath_ufal2 && $pwd =~ m/test-runs-v2/)
+#        {
+#            $testpath = $testpath_ufal2;
+#        }
+#        elsif (-d $testpath_ufal3 && $pwd =~ m/test-runs-v3/)
+#        {
+#            $testpath = $testpath_ufal3;
+#        }
         else
         {
-            $testpath = $testpath_ufal3;
+            $testpath = $testpath_ufal1;
         }
     }
     return $testpath;
