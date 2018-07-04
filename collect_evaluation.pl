@@ -111,7 +111,7 @@ my %secondary =
 # The output of the test runs is mounted in the master VM at this point:
 my $testpath = detect_input_path();
 print STDERR ("Path with runs = $testpath\n");
-die if (! -d $testpath);
+die("The path does not exist") if (! -d $testpath);
 my @results = read_runs($testpath);
 ###!!! We will want to make the following restriction optional and parameterized!
 # Throw away all evaluation runs that started after we published the official results.
