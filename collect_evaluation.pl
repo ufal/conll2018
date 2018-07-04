@@ -746,13 +746,23 @@ sub copy_srun_files
     my @paths = sort(keys(%paths));
     foreach my $source (@paths)
     {
+        # Option 1: The target folder has the same subfolder structure as on Tira, just some files are missing.
+        #           This is useful if we intend to process the copy by this script again.
+        # Option 2: There is just one set of CoNLL-U files per system, and we omit the folders of individual runs.
+        #           This is useful if we want to publish the set of system outputs that were officially ranked.
         my $target = $source;
         $target =~ s:^$srcpath:$tgtpath:;
-        # If the source files are from a secondary virtual machine of a team,
-        # copy them under the primary name of the team.
-        if ($target =~ m:^$tgtpath/([^/]+)/: && exists($secondary{$1}))
+        if(1) # option 1
         {
-            $target =~ s:^$tgtpath/([^/]+)/:$tgtpath/$secondary{$1}/:;
+            # If the source files are from a secondary virtual machine of a team,
+            # copy them under the primary name of the team.
+            if ($target =~ m:^$tgtpath/([^/]+)/: && exists($secondary{$1}))
+            {
+                $target =~ s:^$tgtpath/([^/]+)/:$tgtpath/$secondary{$1}/:;
+            }
+        }
+        else # option 2
+        {
         }
         my $targetfolder = $target;
         $targetfolder =~ s:/[^/]+$::;
