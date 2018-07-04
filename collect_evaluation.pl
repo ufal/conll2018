@@ -752,17 +752,29 @@ sub copy_srun_files
         #           This is useful if we want to publish the set of system outputs that were officially ranked.
         my $target = $source;
         $target =~ s:^$srcpath:$tgtpath:;
-        if(1) # option 1
+        # Every path involves a single CoNLL-U file.
+        # If the source files are from a secondary virtual machine of a team,
+        # copy them under the primary name of the team.
+        if ($target =~ m:^$tgtpath/([^/]+)/: && exists($secondary{$1}))
         {
-            # If the source files are from a secondary virtual machine of a team,
-            # copy them under the primary name of the team.
-            if ($target =~ m:^$tgtpath/([^/]+)/: && exists($secondary{$1}))
-            {
-                $target =~ s:^$tgtpath/([^/]+)/:$tgtpath/$secondary{$1}/:;
-            }
+            $target =~ s:^$tgtpath/([^/]+)/:$tgtpath/$secondary{$1}/:;
+        }
+        if(0) # option 1
+        {
+            # No action required. We already have the target path, e.g.:
+            # cp system-runs-2018/conll18-ud-test-2018-05-06-downloaded-2018-07-04-02-42/Fudan/2018-07-01-14-14-00/output/sv_talbanken.conllu \
+            #    system-runs-2018/filtered/Fudan/2018-07-01-14-14-00/output/sv_talbanken.conllu
         }
         else # option 2
         {
+            # Simplify the target path. Remove two levels specific to a run.
+            $target =~ s:/\d+-\d+-\d+-\d+-\d+-\d+/output(/[a-z_]+\.conllu)$:$1:;
+            # The assumption is that the runs have already been filtered and there is at most one CoNLL-U file per treebank.
+            # If the target file already exists, something went wrong and we are trying to copy it from multiple runs.
+            if (-e $target)
+            {
+                die("The target file '$target' exists. Perhaps we are trying to copy it from multiple runs?");
+            }
         }
         my $targetfolder = $target;
         $targetfolder =~ s:/[^/]+$::;
