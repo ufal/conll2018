@@ -782,6 +782,8 @@ sub copy_srun_files
         die("Cannot create $targetfolder") if (!-d "$targetfolder");
         print STDERR ("cp $source $target\n");
         system("cp $source $target");
+        # The files on Tira have unusual permissions 750. Change them to 644.
+        chmod(0644, $target);
     }
     return @paths;
 }
