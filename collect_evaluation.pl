@@ -16,16 +16,16 @@ use dzsys; # Dan's library for file system operations
 my $metric = 'total-LAS-F1';
 my $bestresults = 0; # display best result of each team regardless whether it is the final run of the primary system
 my $allresults = 0; # display multiple results per team
-my $copy_filtered_eruns = 0;
-my $copy_conllu_files = 0;
+my $copy_filtered_eruns; # target path, e.g. /net/work/people/zeman/unidep/conll2017-test-runs/filtered-eruns
+my $copy_conllu_files; # target path, e.g. /net/work/people/zeman/unidep/conll2017-test-runs/filtered-conllu
 my $latex = 0;
 GetOptions
 (
     'metric=s' => \$metric,
     'bestresults' => \$bestresults,
     'allresults' => \$allresults,
-    'copy' => \$copy_filtered_eruns,
-    'cocopy' => \$copy_conllu_files,
+    'copy=s' => \$copy_filtered_eruns,
+    'cocopy=s' => \$copy_conllu_files,
     'latex' => \$latex
 );
 # Metrics:
@@ -190,11 +190,11 @@ unless ($allresults || $bestresults)
 }
 if ($copy_filtered_eruns)
 {
-    copy_erun_files($testpath, '/net/work/people/zeman/unidep/conll2017-test-runs/filtered-eruns', @results);
+    copy_erun_files($testpath, $copy_filtered_eruns, @results);
 }
 if ($copy_conllu_files)
 {
-    copy_srun_files($testpath, '/net/work/people/zeman/unidep/conll2017-test-runs/filtered-conllu', @results);
+    copy_srun_files($testpath, $copy_conllu_files, @results);
 }
 # Adding averages should happen after combining runs because at present the combining code looks at all LAS-F1 entries that are not 'total-LAS-F1'
 # (in the future they should rather look into the @alltbk list).
