@@ -207,24 +207,6 @@ if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPO
         print_table_markdown("### $treebank", "$treebank-$coremetric", @results);
     }
 }
-elsif ($metric eq 'ranktreebanks')
-{
-    my $treebanks = rank_treebanks(\@alltbk, \@results, 'LAS-F1');
-    my @keys = sort {$treebanks->{$b}{'max-LAS-F1'} <=> $treebanks->{$a}{'max-LAS-F1'}} (keys(%{$treebanks}));
-    my $i = 0;
-    my $max_teamname = get_max_length(('maxteam', map {$treebanks->{$_}{'teammax-LAS-F1'}} (@keys)));
-    my $maxteam_heading = 'maxteam' . (' ' x ($max_teamname-7));
-    print("                      max     $maxteam_heading   avg     stdev\n");
-    foreach my $key (@keys)
-    {
-        $i++;
-        my $tbk = $key;
-        $tbk .= ' ' x (13-length($tbk));
-        my $team = $treebanks->{$key}{'teammax-LAS-F1'};
-        $team .= ' ' x ($max_teamname-length($team));
-        printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{'max-LAS-F1'}, $team, $treebanks->{$key}{'avg-LAS-F1'}, sqrt($treebanks->{$key}{'var-LAS-F1'}));
-    }
-}
 elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
     my $coremetric = $1;
