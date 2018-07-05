@@ -1030,12 +1030,25 @@ sub print_table
                 $tag = ' [combined]';
             }
         }
+        # Is this run the official final submission? It is not if:
+        # - it uses other than primary software
+        # - it uses primary software but it was later superceded by another run
+        # - it was evaluated after we published the official results (the "$deadline")
+        # - it is a combined run that uses one or more runs satisfying the above conditions
         my $final = '     ';
         if (exists($teams{$uniqueteam}{takeruns}))
         {
-            ###!!! Assume that a combined run is always final (i.e. there is at most one combined run per team).
-            if(scalar(@{$teams{$uniqueteam}{takeruns}})==1 && $result->{srun} eq $teams{$uniqueteam}{takeruns}[0] ||
-               scalar(@{$teams{$uniqueteam}{takeruns}})>1 && $result->{srun} =~ m/\+/)
+            # Is it a combined run?
+            if($result->{srun} =~ m/\+/)
+            {
+                my @late_runs = grep {$_ ge $deadline} (split(/\+/, $result->{erun}));
+                if(scalar(@{$teams{$uniqueteam}{takeruns}})>1 && scalar(@late_runs)==0)
+                {
+                    $final = 'Fin: ';
+                }
+            }
+            # Standalone run must be listed in "takeruns" if it is final.
+            elsif(scalar(@{$teams{$uniqueteam}{takeruns}})==1 && $result->{srun} eq $teams{$uniqueteam}{takeruns}[0])
             {
                 $final = 'Fin: ';
             }
