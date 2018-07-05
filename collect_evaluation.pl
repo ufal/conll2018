@@ -319,6 +319,22 @@ else
     {
         print_table_latex($metric, @results);
     }
+    elsif ($format eq 'markdown')
+    {
+        my $printmetric = $metric;
+        $printmetric =~ s/-F1$//;
+        $printmetric =~ s/^total-//;
+        my $heading = "## $printmetric Ranking";
+        if ($bestresults)
+        {
+            $heading = "## Best run per team ($printmetric)";
+        }
+        elsif ($allresults)
+        {
+            $heading = "## All runs ($printmetric)";
+        }
+        print_table_markdown($heading, $metric, @results);
+    }
     else
     {
         print_table($metric, @results);
@@ -914,7 +930,15 @@ sub print_table_markdown
     my $metric = shift;
     my @results = @_;
     print("$heading\n\n");
-    print("<pre>\n");
+    # Tables of best/all runs are very wide because of listing the combined runs.
+    if ($bestresults || $allresults)
+    {
+        print("<pre style='overflow-x:visible; width:950px;'>\n");
+    }
+    else
+    {
+        print("<pre>\n");
+    }
     print_table($metric, @results);
     print("</pre>\n\n\n\n");
 }
