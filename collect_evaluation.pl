@@ -56,6 +56,12 @@ my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
 die("Expected $ntreebanks treebanks, found ".scalar(@alltbk)) if (scalar(@alltbk) != $ntreebanks);
+# Deadline is a timestamp in the same format as identifiers of runs (rrrr-mm-dd-hh-mm-ss).
+# Typically it is not the deadline from the rules because we allow a few more hours for runs to complete.
+# However, once we publish the official results, we do not want to pick up any further arrivals except
+# for unofficial results. Evaluation runs must have their names (start times) earlier than this deadline
+# in order to be considered official. (The timestamps on Tira are based on the Central-European time.)
+my $deadline = '2018-07-02-23-50-45';
 # If takeruns is present, it is the sequence of system runs (not evaluation runs) that should be combined.
 # Otherwise, we should take the last complete run (all files have nonzero scores) of the primary system.
 # If no run is complete and no combination is defined, should we take the best-scoring run of the primary system?
@@ -113,15 +119,17 @@ my $testpath = detect_input_path();
 print STDERR ("Path with runs = $testpath\n");
 die("The path does not exist") if (! -d $testpath);
 my @results = read_runs($testpath);
-###!!! We will want to make the following restriction optional and parameterized!
 # Throw away all evaluation runs that started after we published the official results.
-my $n_results_total = scalar(@results);
-@results = grep {$_->{erun} lt '2018-07-02-23-50-45'} (@results);
-my $n_results_official = scalar(@results);
-my $n_results_removed = $n_results_total - $n_results_official;
-if ($n_results_removed > 0)
+unless ($allresults || $bestresults)
 {
-    print STDERR ("WARNING: Ignoring $n_results_removed evaluation runs that were started after we published the official results.\n");
+    my $n_results_total = scalar(@results);
+    @results = grep {$_->{erun} lt $deadline} (@results);
+    my $n_results_official = scalar(@results);
+    my $n_results_removed = $n_results_total - $n_results_official;
+    if ($n_results_removed > 0)
+    {
+        print STDERR ("WARNING: Ignoring $n_results_removed evaluation runs that were started after we published the official results ($deadline).\n");
+    }
 }
 # Create a map from system run ids to corresponding evaluation runs.
 my %srun2erun;
