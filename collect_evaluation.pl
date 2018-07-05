@@ -18,7 +18,7 @@ my $bestresults = 0; # display best result of each team regardless whether it is
 my $allresults = 0; # display multiple results per team
 my $copy_filtered_eruns; # target path, e.g. /net/work/people/zeman/unidep/conll2017-test-runs/filtered-eruns
 my $copy_conllu_files; # target path, e.g. /net/work/people/zeman/unidep/conll2017-test-runs/filtered-conllu
-my $latex = 0;
+my $format; # default: plain text table, no headings. Options: markdown|latex
 GetOptions
 (
     'metric=s' => \$metric,
@@ -26,7 +26,7 @@ GetOptions
     'allresults' => \$allresults,
     'copy=s' => \$copy_filtered_eruns,
     'cocopy=s' => \$copy_conllu_files,
-    'latex' => \$latex
+    'format=s' => \$format # format=markdown, format=latex
 );
 # Metrics:
 # total-LAS-F1, -MLAS-, -BLEX-, -CLAS-, -UAS-, -UPOS-, -XPOS-, -UFeats-, -AllTags-, -Lemmas-, -Words-, -Tokens-, -Sentences-
@@ -244,7 +244,7 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
         printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
     }
 }
-elsif ($metric eq 'ranktreebanks-both' && $latex)
+elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
 {
     my $treebanks = rank_treebanks(\@alltbk, \@results, 'LAS-F1');
     my $ctreebanks = rank_treebanks(\@alltbk, \@results, 'CLAS-F1');
@@ -315,7 +315,7 @@ else
         print('Macro-average LAS of the ', scalar(@surtbk), ' surprise language treebanks: ', join(', ', @surtbk), "\n");
         add_average('surtreebanks-LAS-F1', 'LAS-F1', \@surtbk, \@results);
     }
-    if ($latex)
+    if ($format eq 'latex')
     {
         print_table_latex($metric, @results);
     }
@@ -943,7 +943,7 @@ sub print_table_latex
         print(" & \\bf Files ");
     }
     print("\\\\\\hline\n");
-    $latex = 1; ###!!! global
+    $format = 'latex'; ###!!! global
     print_table($metric, @results);
     print("\\end{tabular}\n");
     print("\\end{center}\n");
@@ -1066,7 +1066,7 @@ sub print_table
             $runs = substr($runs, 0, 50).'...' if (length($runs) > 50);
         }
         my $numbersize = $metric eq 'runtime' ? 6 : 5;
-        if ($latex)
+        if ($format eq 'latex')
         {
             $name =~ s/–/--/g;
             $name =~ s/ç/{\\c{c}}/g;
