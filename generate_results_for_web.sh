@@ -1,16 +1,26 @@
-collect_evaluation.pl --metric pertreebank-LAS-F1 > results-las.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-MLAS-F1 > results-mlas.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-BLEX-F1 > results-blex.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-CLAS-F1 > results-clas.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-UAS-F1 > results-uas.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-UPOS-F1 > results-upos.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-XPOS-F1 > results-xpos.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-UFeats-F1 > results-ufeats.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-AllTags-F1 > results-alltags.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-Lemmas-F1 > results-lemmas.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-Sentences-F1 > results-sentences.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-Words-F1 > results-words.md 2>/dev/null
-collect_evaluation.pl --metric pertreebank-Tokens-F1 > results-tokens.md 2>/dev/null
+# Once the official results have been published, we probably do not want to
+# regenerate them. If we only want to regenerate the unofficial runs, that is,
+# --bestresults and --allresults, we run this as $0 unoff.
+if [[ "$1" != "unoff" ]] ; then
+  collect_evaluation.pl --metric pertreebank-LAS-F1 > results-las.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-MLAS-F1 > results-mlas.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-BLEX-F1 > results-blex.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-CLAS-F1 > results-clas.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-UAS-F1 > results-uas.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-UPOS-F1 > results-upos.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-XPOS-F1 > results-xpos.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-UFeats-F1 > results-ufeats.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-AllTags-F1 > results-alltags.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-Lemmas-F1 > results-lemmas.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-Sentences-F1 > results-sentences.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-Words-F1 > results-words.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-Tokens-F1 > results-tokens.md 2>/dev/null
+  collect_evaluation.pl --metric ranktreebanks-LAS-F1 --format markdown > results-treebanks-las.md 2>/dev/null
+  collect_evaluation.pl --metric ranktreebanks-MLAS-F1 --format markdown > results-treebanks-mlas.md 2>/dev/null
+  collect_evaluation.pl --metric ranktreebanks-BLEX-F1 --format markdown > results-treebanks-blex.md 2>/dev/null
+  collect_evaluation.pl --metric ranktreebanks-Words-F1 --format markdown > results-treebanks-words.md 2>/dev/null
+  collect_evaluation.pl --metric ranktreebanks-Sentences-F1 --format markdown > results-treebanks-sentences.md 2>/dev/null
+fi
 cat <<EOF > results-best-all.md
 ---
 layout: page
@@ -49,9 +59,4 @@ collect_evaluation.pl --metric total-BLEX-F1 --bestresults --format markdown >> 
 collect_evaluation.pl --metric total-LAS-F1 --allresults --format markdown >> results-best-all.md 2>/dev/null
 collect_evaluation.pl --metric total-MLAS-F1 --allresults --format markdown >> results-best-all.md 2>/dev/null
 collect_evaluation.pl --metric total-BLEX-F1 --allresults --format markdown >> results-best-all.md 2>/dev/null
-collect_evaluation.pl --metric ranktreebanks-LAS-F1 --format markdown > results-treebanks-las.md 2>/dev/null
-collect_evaluation.pl --metric ranktreebanks-MLAS-F1 --format markdown > results-treebanks-mlas.md 2>/dev/null
-collect_evaluation.pl --metric ranktreebanks-BLEX-F1 --format markdown > results-treebanks-blex.md 2>/dev/null
-collect_evaluation.pl --metric ranktreebanks-Words-F1 --format markdown > results-treebanks-words.md 2>/dev/null
-collect_evaluation.pl --metric ranktreebanks-Sentences-F1 --format markdown > results-treebanks-sentences.md 2>/dev/null
 zip results.zip results-*.md
