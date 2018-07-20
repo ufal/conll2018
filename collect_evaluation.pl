@@ -305,7 +305,7 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
     elsif ($format eq 'latex')
     {
         print("\\hline\n");
-        print("\\\end{tabular}\n");
+        print("\\end{tabular}\n");
         print("}\n");
         print("\\end{center}\n");
         print("\\caption{\\label{tab:ranktreebanks-$coremetric}Treebank ranking by best parser $printmetric. ISO 639 language codes are followed by a treebank code.}\n");
