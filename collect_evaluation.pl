@@ -285,11 +285,11 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
 elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
 {
     my $treebanks = rank_treebanks(\@alltbk, \@results, 'LAS-F1');
-    my $ctreebanks = rank_treebanks(\@alltbk, \@results, 'CLAS-F1');
+    my $ctreebanks = rank_treebanks(\@alltbk, \@results, 'MLAS-F1');
     my $wtreebanks = rank_treebanks(\@alltbk, \@results, 'Words-F1');
     my $streebanks = rank_treebanks(\@alltbk, \@results, 'Sentences-F1');
     my @keys = sort {$treebanks->{$b}{'max-LAS-F1'} <=> $treebanks->{$a}{'max-LAS-F1'}} (keys(%{$treebanks}));
-    my @ckeys = sort {$ctreebanks->{$b}{'max-CLAS-F1'} <=> $ctreebanks->{$a}{'max-CLAS-F1'}} (keys(%{$ctreebanks}));
+    my @ckeys = sort {$ctreebanks->{$b}{'max-CLAS-F1'} <=> $ctreebanks->{$a}{'max-MLAS-F1'}} (keys(%{$ctreebanks}));
     my $i = 0;
     foreach my $key (@ckeys)
     {
@@ -303,7 +303,7 @@ elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
     print("\\setlength\\tabcolsep{3pt} % default value: 6pt\n");
     print("\\begin{tabular}{|r l|r|r|l");
     print("|}\n");
-    print("\\hline & \\bf Treebank & \\bf LAS F\$_1\$ & \\bf CLAS F\$_1\$ & \\bf Best system & \\bf Words & \\bf Sent \\\\\\hline\n");
+    print("\\hline & \\bf Treebank & \\bf LAS F\$_1\$ & \\bf MLAS F\$_1\$ & \\bf Best system & \\bf Words & \\bf Sent \\\\\\hline\n");
     my $last_clas;
     foreach my $key (@keys)
     {
@@ -311,12 +311,12 @@ elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
         my $tbk = $key;
         $tbk =~ s/_/\\_/g;
         $tbk .= ' ' x (13-length($tbk));
-        my $clas = $ctreebanks->{$key}{'max-CLAS-F1'};
+        my $clas = $ctreebanks->{$key}{'max-MLAS-F1'};
         my $more = defined($last_clas) && $clas > $last_clas;
         $last_clas = $clas;
         $clas = sprintf($more ? "\\textbf{%2d. %5.2f}" : "%2d. %5.2f", $ctreebanks->{$key}{crank}, $clas);
         my $team = $treebanks->{$key}{'teammax-LAS-F1'};
-        $team .= ' / '.$ctreebanks->{$key}{'teammax-CLAS-F1'} if ($ctreebanks->{$key}{'teammax-CLAS-F1'} ne $treebanks->{$key}{'teammax-LAS-F1'});
+        $team .= ' / '.$ctreebanks->{$key}{'teammax-MLAS-F1'} if ($ctreebanks->{$key}{'teammax-MLAS-F1'} ne $treebanks->{$key}{'teammax-LAS-F1'});
         printf("%2d. & %s & %5.2f & %s & %s & %5.2f & %5.2f \\\\\n", $i, $tbk, $treebanks->{$key}{'max-LAS-F1'}, $clas, $team, $wtreebanks->{$key}{'max-Words-F1'}, $streebanks->{$key}{'max-Sentences-F1'});
     }
     print("\\end{tabular}\n");
