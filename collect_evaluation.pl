@@ -1117,6 +1117,7 @@ sub print_table
                 $last_tokens = $result->{'total-Tokens-F1'};
                 $last_sentences = $result->{'total-Sentences-F1'};
             }
+            # We publish one table with UPOS, features and lemmas.
             elsif ($metric eq 'total-UPOS-F1')
             {
                 $name =~ s/\(.+?\)//;
