@@ -176,6 +176,7 @@ if ($copy_conllu_files)
 {
     copy_srun_files($testpath, $copy_conllu_files, @results);
 }
+add_team_printnames(\@results);
 # Adding averages should happen after combining runs because at present the combining code looks at all LAS-F1 entries that are not 'total-LAS-F1'
 # (in the future they should rather look into the @alltbk list).
 # Compute additional averages if they are required.
@@ -851,6 +852,22 @@ sub copy_srun_files
 
 
 #------------------------------------------------------------------------------
+# For every run in a list, adds the printable team name to the hash.
+#------------------------------------------------------------------------------
+sub add_team_printnames
+{
+    my $runs = shift;
+    foreach my $result (@{$runs})
+    {
+        $result->{uniqueteam} = $result->{team};
+        $result->{uniqueteam} = $secondary{$result->{uniqueteam}} if (exists($secondary{$result->{uniqueteam}}));
+        $result->{printname} = exists($teams{$result->{uniqueteam}}{printname}) ? $teams{$result->{uniqueteam}}{printname} : $result->{uniqueteam};
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
 # For every run in a list, computes a given average score and adds it to the
 # hash of scores of the run.
 #------------------------------------------------------------------------------
@@ -1024,12 +1041,6 @@ sub print_table
     ###!!! Reads the global hash %secondary (mapping between primary and secondary virtual machine of two teams).
     my $metric = shift;
     my @results = @_;
-    foreach my $result (@results)
-    {
-        $result->{uniqueteam} = $result->{team};
-        $result->{uniqueteam} = $secondary{$result->{uniqueteam}} if (exists($secondary{$result->{uniqueteam}}));
-        $result->{printname} = exists($teams{$result->{uniqueteam}}{printname}) ? $teams{$result->{uniqueteam}}{printname} : $result->{uniqueteam};
-    }
     @results = sort {my $r = $b->{$metric} <=> $a->{$metric}; unless ($r) {$r = $a->{printname} cmp $b->{printname}} $r} (@results);
     my %teammap;
     my $i = 0;
