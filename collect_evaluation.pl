@@ -954,7 +954,10 @@ sub print_table_latex
         print(' c');
     }
     print("|}\n");
-    print("\\hline & \\bf Team & \\bf LAS F\$_1\$");
+    my $heading_metric = $metric;
+    $heading_metric =~ s/^total-//;
+    $heading_metric =~ s/-F1$//; # save space (column width)
+    print("\\hline & \\bf Team & \\bf $heading_metric");
     if ($metric eq 'total-LAS-F1')
     {
         print(" & \\bf Files ");
@@ -1091,7 +1094,7 @@ sub print_table
             $name =~ s/Ú/{\\'{U}}/g; #'
             $name =~ s/ñ/{\\~{n}}/g;
             $name =~ s/ü/{\\"{u}}/g; #"
-            $name =~ s/ș/{\\c{s}}/g;
+            $name =~ s/ș/{\\c{s}}/g; # This is not correct because it results in cedilla, i.e., ş. Alternatively, we could leave the character unescaped.
             $name =~ s/è/{\\`{e}}/g; #`
             $name =~ s/de Compostela/d.C./;
             $name =~ s/^(BASELINE.+)\(Praha\)/$1/;
