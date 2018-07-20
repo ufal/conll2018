@@ -256,7 +256,20 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
 {
     my $coremetric = $1;
     my $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
-    my @keys = sort {$treebanks->{$b}{"max-$coremetric"} <=> $treebanks->{$a}{"max-$coremetric"}} (keys(%{$treebanks}));
+    my @keys = sort
+    {
+        my $r = $treebanks->{$b}{"max-$coremetric"} <=> $treebanks->{$a}{"max-$coremetric"};
+        unless ($r)
+        {
+            $r = $treebanks->{$b}{"avg-$coremetric"} <=> $treebanks->{$a}{"avg-$coremetric"};
+            unless ($r)
+            {
+                $r = $a cmp $b;
+            }
+        }
+        $r
+    }
+    (keys(%{$treebanks}));
     my $i = 0;
     my $max_teamname = get_max_length(('maxteam', map {$treebanks->{$_}{"teammax-$coremetric"}} (@keys)));
     my $maxteam_heading = 'maxteam' . (' ' x ($max_teamname-7));
