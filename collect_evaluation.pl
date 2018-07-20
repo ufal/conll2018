@@ -260,14 +260,27 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
     my $i = 0;
     my $max_teamname = get_max_length(('maxteam', map {$treebanks->{$_}{"teammax-$coremetric"}} (@keys)));
     my $maxteam_heading = 'maxteam' . (' ' x ($max_teamname-7));
+    my $printmetric = $coremetric;
+    $printmetric =~ s/-F1$//;
     if ($format eq 'markdown')
     {
-        my $printmetric = $coremetric;
-        $printmetric =~ s/-F1$//;
         print("## Treebanks ranked by best $printmetric\n\n");
         print("<pre>\n");
+        print("                      max     $maxteam_heading   avg     stdev\n");
     }
-    print("                      max     $maxteam_heading   avg     stdev\n");
+    elsif ($format eq 'latex')
+    {
+        print("\\begin{table}[!tp]\n");
+        print("\\begin{center}\n");
+        print("\\setlength\\tabcolsep{3pt} % default value: 6pt\n");
+        print("\\adjustbox{scale={0.56}}{\n");
+        print("\\begin{tabular}{|r l|r|l|r|r|}\n");
+        print("\\hline & \\bf Treebank & \\bf $printmetric & \\bf Best system & \\bf Avg & \\bf StDev \\\\\\hline\n");
+    }
+    else # plain text
+    {
+        print("                      max     $maxteam_heading   avg     stdev\n");
+    }
     foreach my $key (@keys)
     {
         $i++;
@@ -275,11 +288,28 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
         $tbk .= ' ' x (13-length($tbk));
         my $team = $treebanks->{$key}{"teammax-$coremetric"};
         $team .= ' ' x ($max_teamname-length($team));
-        printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
+        if ($format eq 'latex')
+        {
+            $tbk =~ s/_/\\_/g;
+            printf("%2d. & %s & %5.2f & %s & %5.2f & ±%5.2f \\\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
+        }
+        else
+        {
+            printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
+        }
     }
     if ($format eq 'markdown')
     {
         print("</pre>\n\n\n\n");
+    }
+    elsif ($format eq 'latex')
+    {
+        print("\\hline\n");
+        print("\\\end{tabular}\n");
+        print("}\n");
+        print("\\end{center}\n");
+        print("\\caption{\\label{tab:ranktreebanks-$coremetric}Treebank ranking by best parser $printmetric. ISO 639 language codes are followed by a treebank code.}\n");
+        print("\\end{table}\n");
     }
 }
 elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
