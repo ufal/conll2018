@@ -178,16 +178,58 @@ if ($copy_conllu_files)
 }
 # Adding averages should happen after combining runs because at present the combining code looks at all LAS-F1 entries that are not 'total-LAS-F1'
 # (in the future they should rather look into the @alltbk list).
+# Compute additional averages if they are required.
+if ($metric =~ m/^(pertreebank|alltreebanks|bigtreebanks|smalltreebanks|pudtreebanks|surtreebanks)-(.+-F1)$/)
+{
+    my $selection = $1;
+    my $coremetric = $2;
+    # In the paper, some scores are displayed in one table together with others, so we must average other metrics as well.
+    # LAS => LAS & MLAS & BLEX
+    # Words => Tokens & Words & Sentences
+    # UPOS => UPOS & UFeats & Lemmas
+    my @metrics = ($coremetric);
+    if ($coremetric eq 'LAS-F1')
+    {
+        @metrics = ('LAS-F1', 'MLAS-F1', 'BLEX-F1');
+    }
+    elsif ($coremetric eq 'Words-F1')
+    {
+        @metrics = ('Tokens-F1', 'Words-F1', 'Sentences-F1');
+    }
+    elsif ($coremetric eq 'UPOS-F1')
+    {
+        @metrics = ('UPOS-F1', 'UFeats-F1', 'Lemmas-F1');
+    }
+    foreach my $metric (@metrics)
+    {
+        if ($selection =~ m/^(pertreebank|alltreebanks)$/)
+        {
+            # Sanity check: If we compute average LAS over all treebanks we should replicate the pre-existing total-LAS-F1 score.
+            add_average("alltreebanks-$coremetric", $coremetric, \@alltbk, \@results);
+        }
+        if ($selection =~ m/^(pertreebank|bigtreebanks)$/)
+        {
+            add_average("bigtreebanks-$coremetric", $coremetric, \@bigtbk, \@results);
+        }
+        if ($selection =~ m/^(pertreebank|smalltreebanks)$/)
+        {
+            add_average("smalltreebanks-$coremetric", $coremetric, \@smltbk, \@results);
+        }
+        if ($selection =~ m/^(pertreebank|pudtreebanks)$/)
+        {
+            add_average("pudtreebanks-$coremetric", $coremetric, \@pudtbk, \@results);
+        }
+        if ($selection =~ m/^(pertreebank|surtreebanks)$/)
+        {
+            add_average("surtreebanks-$coremetric", $coremetric, \@surtbk, \@results);
+        }
+    }
+}
 # Print the results.
 # Print them in MarkDown if the long, per-treebank breakdown is requested.
 if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
     my $coremetric = $1;
-    add_average("alltreebanks-$coremetric", $coremetric, \@alltbk, \@results);
-    add_average("bigtreebanks-$coremetric", $coremetric, \@bigtbk, \@results);
-    add_average("smalltreebanks-$coremetric", $coremetric, \@smltbk, \@results);
-    add_average("pudtreebanks-$coremetric", $coremetric, \@pudtbk, \@results);
-    add_average("surtreebanks-$coremetric", $coremetric, \@surtbk, \@results);
     my $bigexpl = "Macro-average $coremetric of the ".scalar(@bigtbk)." big treebanks: ".join(', ', @bigtbk).'. '.
         "These are the treebanks that have development data available, hence these results should be comparable ".
         "to the performance of the systems on the development data.";
@@ -284,34 +326,30 @@ elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
 else
 {
     # Sanity check: If we compute average LAS over all treebanks we should replicate the pre-existing total-LAS-F1 score.
-    if ($metric eq 'alltreebanks-LAS-F1')
+    if ($metric =~ m/^alltreebanks-(.+-F1)$/)
     {
-        print('Macro-average LAS of all ', scalar(@alltbk), ' treebanks: ', join(', ', @alltbk), "\n");
-        add_average('alltreebanks-LAS-F1', 'LAS-F1', \@alltbk, \@results);
+        my $coremetric = $1;
+        print("Macro-average $coremetric of all ", scalar(@alltbk), ' treebanks: ', join(', ', @alltbk), "\n");
     }
     elsif ($metric =~ m/^bigtreebanks-(.+-F1)$/)
     {
         my $coremetric = $1;
         print("Macro-average $coremetric of the ", scalar(@bigtbk), ' big treebanks: ', join(', ', @bigtbk), "\n");
-        add_average("bigtreebanks-$coremetric", $coremetric, \@bigtbk, \@results);
     }
     elsif ($metric =~ m/^smalltreebanks-(.+-F1)$/)
     {
         my $coremetric = $1;
         print("Macro-average $coremetric of the ", scalar(@smltbk), ' small treebanks: ', join(', ', @smltbk), "\n");
-        add_average("smalltreebanks-$coremetric", $coremetric, \@smltbk, \@results);
     }
     elsif ($metric =~ m/^pudtreebanks-(.+-F1)$/)
     {
         my $coremetric = $1;
         print("Macro-average $coremetric of the ", scalar(@pudtbk), ' PUD treebanks (additional parallel test sets): ', join(', ', @pudtbk), "\n");
-        add_average("pudtreebanks-$coremetric", $coremetric, \@pudtbk, \@results);
     }
     elsif ($metric =~ m/^surtreebanks-(.+-F1)$/)
     {
         my $coremetric = $1;
         print("Macro-average $coremetric of the ", scalar(@surtbk), ' surprise language treebanks: ', join(', ', @surtbk), "\n");
-        add_average("surtreebanks-$coremetric", $coremetric, \@surtbk, \@results);
     }
     if ($format eq 'latex')
     {
@@ -997,6 +1035,8 @@ sub print_table
     my $i = 0;
     my $last_value;
     my $last_rank;
+    my $last_mlas;
+    my $last_blex;
     my $last_tokens;
     my $last_sentences;
     my $last_features;
@@ -1111,6 +1151,22 @@ sub print_table
             if ($metric eq 'total-LAS-F1')
             {
                 printf("%4s & %s & %$numbersize.2f &%s \\\\\\hline\n", $rank, $name, $result->{$metric}, $tag);
+            }
+            # For subsets of treebanks, we publish one table with LAS, MLAS and BLEX combined.
+            elsif ($metric =~ m/^(all|big|small|pud|sur)treebanks-LAS-F1$/)
+            {
+                my $subset = $1;
+                $name =~ s/\(.+?\)//;
+                $name = substr($name.(' 'x38), 0, 30);
+                my $las = $result->{$metric};
+                my $mlas = $result->{"${subset}treebanks-MLAS-F1"};
+                my $blex = $result->{"${subset}treebanks-BLEX-F1"};
+                # The table is ordered by LAS. If MLAS or BLEX is out of order, print them in bold.
+                my $ooo_mlas = defined($last_mlas) && $mlas > $last_mlas ? "\\bf " : '';
+                my $ooo_blex = defined($last_blex) && $blex > $last_blex ? "\\bf " : '';
+                printf("%4s & %s & %5.2f & $ooo_mlas%5.2f & $ooo_blex%5.2f \\\\\\hline\n", $rank, $name, $las, $mlas, $blex);
+                $last_mlas = $mlas;
+                $last_blex = $blex;
             }
             # We publish one table with Tokens, Words and Sentences combined.
             elsif ($metric eq 'total-Words-F1')
