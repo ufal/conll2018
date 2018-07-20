@@ -926,7 +926,7 @@ sub rank_treebanks
                 if (!defined($treebanks{$treebank}{"max-$metric"}) || $run->{$key} > $treebanks{$treebank}{"max-$metric"})
                 {
                     $treebanks{$treebank}{"max-$metric"} = $run->{$key};
-                    $treebanks{$treebank}{"teammax-$metric"} = $run->{team};
+                    $treebanks{$treebank}{"teammax-$metric"} = $run->{printname};
                 }
                 $treebanks{$treebank}{"sum-$metric"} += $run->{$key};
             }
