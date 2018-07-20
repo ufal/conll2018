@@ -994,6 +994,8 @@ sub print_table
     my $last_rank;
     my $last_tokens;
     my $last_sentences;
+    my $last_features;
+    my $last_lemmas;
     foreach my $result (@results)
     {
         my $uniqueteam = $result->{uniqueteam};
@@ -1127,7 +1129,11 @@ sub print_table
                 my $xpos = $result->{'total-XPOS-F1'};
                 my $feat = $result->{'total-UFeats-F1'};
                 my $alltags = $result->{'total-AllTags-F1'}; # Includes XPOS, which many systems ignore. I don't know if it includes lemmas.
-                printf("%4s & %s & %5.2f & %5.2f & %5.2f \\\\\\hline\n", $rank, $name, $upos, $feat, $lemmas);
+                my $ooo_features = defined($last_features) && $feat > $last_features ? "\\bf " : '';
+                my $ooo_lemmas = defined($last_lemmas) && $lemmas > $last_lemmas ? "\\bf " : '';
+                printf("%4s & %s & %5.2f & $ooo_features%5.2f & $ooo_lemmas%5.2f \\\\\\hline\n", $rank, $name, $upos, $feat, $lemmas);
+                $last_features = $feat;
+                $last_lemmas = $lemmas;
             }
             else
             {
