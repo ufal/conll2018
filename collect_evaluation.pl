@@ -205,23 +205,23 @@ if ($metric =~ m/^(pertreebank|alltreebanks|bigtreebanks|smalltreebanks|pudtreeb
         if ($selection =~ m/^(pertreebank|alltreebanks)$/)
         {
             # Sanity check: If we compute average LAS over all treebanks we should replicate the pre-existing total-LAS-F1 score.
-            add_average("alltreebanks-$coremetric", $coremetric, \@alltbk, \@results);
+            add_average("alltreebanks-$metric", $metric, \@alltbk, \@results);
         }
         if ($selection =~ m/^(pertreebank|bigtreebanks)$/)
         {
-            add_average("bigtreebanks-$coremetric", $coremetric, \@bigtbk, \@results);
+            add_average("bigtreebanks-$metric", $metric, \@bigtbk, \@results);
         }
         if ($selection =~ m/^(pertreebank|smalltreebanks)$/)
         {
-            add_average("smalltreebanks-$coremetric", $coremetric, \@smltbk, \@results);
+            add_average("smalltreebanks-$metric", $metric, \@smltbk, \@results);
         }
         if ($selection =~ m/^(pertreebank|pudtreebanks)$/)
         {
-            add_average("pudtreebanks-$coremetric", $coremetric, \@pudtbk, \@results);
+            add_average("pudtreebanks-$metric", $metric, \@pudtbk, \@results);
         }
         if ($selection =~ m/^(pertreebank|surtreebanks)$/)
         {
-            add_average("surtreebanks-$coremetric", $coremetric, \@surtbk, \@results);
+            add_average("surtreebanks-$metric", $metric, \@surtbk, \@results);
         }
     }
 }
