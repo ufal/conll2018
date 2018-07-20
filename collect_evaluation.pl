@@ -289,7 +289,7 @@ elsif ($metric eq 'ranktreebanks-both' && $format eq 'latex')
     my $wtreebanks = rank_treebanks(\@alltbk, \@results, 'Words-F1');
     my $streebanks = rank_treebanks(\@alltbk, \@results, 'Sentences-F1');
     my @keys = sort {$treebanks->{$b}{'max-LAS-F1'} <=> $treebanks->{$a}{'max-LAS-F1'}} (keys(%{$treebanks}));
-    my @ckeys = sort {$ctreebanks->{$b}{'max-CLAS-F1'} <=> $ctreebanks->{$a}{'max-MLAS-F1'}} (keys(%{$ctreebanks}));
+    my @ckeys = sort {$ctreebanks->{$b}{'max-MLAS-F1'} <=> $ctreebanks->{$a}{'max-MLAS-F1'}} (keys(%{$ctreebanks}));
     my $i = 0;
     foreach my $key (@ckeys)
     {
