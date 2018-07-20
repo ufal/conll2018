@@ -256,12 +256,15 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
 {
     my $coremetric = $1;
     my $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
+    # For some metrics it is more interesting to see the average than the best result.
+    my $crit1 = 'avg'; # 'max';
+    my $crit2 = 'max'; # 'avg';
     my @keys = sort
     {
-        my $r = $treebanks->{$b}{"max-$coremetric"} <=> $treebanks->{$a}{"max-$coremetric"};
+        my $r = $treebanks->{$b}{"$crit1-$coremetric"} <=> $treebanks->{$a}{"$crit1-$coremetric"};
         unless ($r)
         {
-            $r = $treebanks->{$b}{"avg-$coremetric"} <=> $treebanks->{$a}{"avg-$coremetric"};
+            $r = $treebanks->{$b}{"$crit2-$coremetric"} <=> $treebanks->{$a}{"$crit2-$coremetric"};
             unless ($r)
             {
                 $r = $a cmp $b;
