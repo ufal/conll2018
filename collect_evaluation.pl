@@ -30,6 +30,8 @@ GetOptions
 );
 # Metrics:
 # total-LAS-F1, -MLAS-, -BLEX-, -CLAS-, -UAS-, -UPOS-, -XPOS-, -UFeats-, -AllTags-, -Lemmas-, -Words-, -Tokens-, -Sentences-
+# bigtreebanks-*, pudtreebanks-*, smalltreebanks-*, surtreebanks-* (ditto)
+# individual treebanks, e.g., pl_lfg-LAS-F1
 # pertreebank-* (ditto)
 # ranktreebanks, ranktreebanks-CLAS, ranktreebanks-both
 
@@ -287,26 +289,29 @@ else
         print('Macro-average LAS of all ', scalar(@alltbk), ' treebanks: ', join(', ', @alltbk), "\n");
         add_average('alltreebanks-LAS-F1', 'LAS-F1', \@alltbk, \@results);
     }
-    elsif ($metric =~ m/^bigtreebanks-(LAS-F1|UAS-F1)$/)
+    elsif ($metric =~ m/^bigtreebanks-(.+-F1)$/)
     {
         my $coremetric = $1;
         print("Macro-average $coremetric of the ", scalar(@bigtbk), ' big treebanks: ', join(', ', @bigtbk), "\n");
         add_average("bigtreebanks-$coremetric", $coremetric, \@bigtbk, \@results);
     }
-    elsif ($metric eq 'smalltreebanks-LAS-F1')
+    elsif ($metric =~ m/^smalltreebanks-(.+-F1)$/)
     {
-        print('Macro-average LAS of the ', scalar(@smltbk), ' small treebanks: ', join(', ', @smltbk), "\n");
-        add_average('smalltreebanks-LAS-F1', 'LAS-F1', \@smltbk, \@results);
+        my $coremetric = $1;
+        print("Macro-average $coremetric of the ", scalar(@smltbk), ' small treebanks: ', join(', ', @smltbk), "\n");
+        add_average("smalltreebanks-$coremetric", $coremetric, \@smltbk, \@results);
     }
-    elsif ($metric eq 'pudtreebanks-LAS-F1')
+    elsif ($metric =~ m/^pudtreebanks-(.+-F1)$/)
     {
-        print('Macro-average LAS of the ', scalar(@pudtbk), ' PUD treebanks (additional parallel test sets): ', join(', ', @pudtbk), "\n");
-        add_average('pudtreebanks-LAS-F1', 'LAS-F1', \@pudtbk, \@results);
+        my $coremetric = $1;
+        print("Macro-average $coremetric of the ", scalar(@pudtbk), ' PUD treebanks (additional parallel test sets): ', join(', ', @pudtbk), "\n");
+        add_average("pudtreebanks-$coremetric", $coremetric, \@pudtbk, \@results);
     }
-    elsif ($metric eq 'surtreebanks-LAS-F1')
+    elsif ($metric =~ m/^surtreebanks-(.+-F1)$/)
     {
-        print('Macro-average LAS of the ', scalar(@surtbk), ' surprise language treebanks: ', join(', ', @surtbk), "\n");
-        add_average('surtreebanks-LAS-F1', 'LAS-F1', \@surtbk, \@results);
+        my $coremetric = $1;
+        print("Macro-average $coremetric of the ", scalar(@surtbk), ' surprise language treebanks: ', join(', ', @surtbk), "\n");
+        add_average("surtreebanks-$coremetric", $coremetric, \@surtbk, \@results);
     }
     if ($format eq 'latex')
     {
