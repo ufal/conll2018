@@ -291,7 +291,7 @@ elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F
         if ($format eq 'latex')
         {
             $tbk =~ s/_/\\_/g;
-            printf("%2d. & %s & %5.2f & %s & %5.2f & ±%5.2f \\\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
+            printf("%2d. & %s & %5.2f & %s & %5.2f & ±%5.2f \\\\\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
         }
         else
         {
