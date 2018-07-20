@@ -992,6 +992,8 @@ sub print_table
     my $i = 0;
     my $last_value;
     my $last_rank;
+    my $last_tokens;
+    my $last_sentences;
     foreach my $result (@results)
     {
         my $uniqueteam = $result->{uniqueteam};
@@ -1103,11 +1105,17 @@ sub print_table
             {
                 printf("%4s & %s & %$numbersize.2f &%s \\\\\\hline\n", $rank, $name, $result->{$metric}, $tag);
             }
+            # We publish one table with Tokens, Words and Sentences combined.
             elsif ($metric eq 'total-Words-F1')
             {
                 $name =~ s/\(.+?\)//;
                 $name = substr($name.(' 'x38), 0, 30);
-                printf("%4s & %s & %$numbersize.2f & %$numbersize.2f & %$numbersize.2f \\\\\\hline\n", $rank, $name, $result->{'total-Tokens-F1'}, $result->{$metric}, $result->{'total-Sentences-F1'});
+                # The table is ordered by words. If tokens or sentences are out of order, print them in bold.
+                my $ooo_tokens = defined($last_tokens) && $result->{'total-Tokens-F1'} > $last_tokens ? "\\bf " : '';
+                my $ooo_sentences = defined($last_sentences) && $result->{'total-Sentences-F1'} > $last_sentences ? "\\bf " : '';
+                printf("%4s & %s & $ooo_tokens%$numbersize.2f & %$numbersize.2f & $ooo_sentences%$numbersize.2f \\\\\\hline\n", $rank, $name, $result->{'total-Tokens-F1'}, $result->{$metric}, $result->{'total-Sentences-F1'});
+                $last_tokens = $result->{'total-Tokens-F1'};
+                $last_sentences = $result->{'total-Sentences-F1'};
             }
             elsif ($metric eq 'total-UPOS-F1')
             {
