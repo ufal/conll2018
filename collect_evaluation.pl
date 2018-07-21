@@ -280,7 +280,9 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(.+-F1)$/)
             }
             $ltreebanks->{$key}{"avg-DMLAS-F1"} = $ltreebanks->{$key}{"avg-LAS-F1"} - $mtreebanks->{$key}{"avg-MLAS-F1"};
             ###!!! It is not clear what the variance of DMLAS should be. We take the mean value of the two.
-            $ltreebanks->{$key}{"var-DMLAS-F1"} = ($ltreebanks->{$key}{"var-LAS-F1"} + $mtreebanks->{$key}{"var-MLAS-F1"}) / 2;
+            ###!!! By setting it to undef we turn its printing off.
+            #$ltreebanks->{$key}{"var-DMLAS-F1"} = ($ltreebanks->{$key}{"var-LAS-F1"} + $mtreebanks->{$key}{"var-MLAS-F1"}) / 2;
+            $ltreebanks->{$key}{"var-DMLAS-F1"} = undef;
         }
         $treebanks = $ltreebanks;
     }
@@ -355,7 +357,9 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(.+-F1)$/)
         {
             $tbk =~ s/_/\\_/g;
             my $ooo_avg = ($crit2 eq 'avg' && defined($last_crit2) && $treebanks->{$key}{"avg-$coremetric"} > $last_crit2) ? "\\bf " : '';
-            printf("%2d. & %s & %5.2f & %s & $ooo_avg%5.2f & \$\\pm\$%5.2f \\\\\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
+            printf("%2d. & %s & %5.2f & %s & $ooo_avg%5.2f ", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"});
+            printf("& \$\\pm\$%5.2f ", sqrt($treebanks->{$key}{"var-$coremetric"})) if (defined($treebanks->{$key}{"var-$coremetric"}));
+            print("\\\\\n");
         }
         else
         {
