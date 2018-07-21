@@ -271,7 +271,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(.+-F1)$/)
             if ($avg eq 'a')
             {
                 $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"avg-LAS-F1"};
-                $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $mtreebanks->{$key}{"avg-MLAS-F1"};
+                $ltreebanks->{$key}{"teammax-DMLAS-F1"} = sprintf("%5.2f", $mtreebanks->{$key}{"avg-MLAS-F1"});
             }
             else
             {
