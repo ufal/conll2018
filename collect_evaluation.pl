@@ -33,7 +33,7 @@ GetOptions
 # bigtreebanks-*, pudtreebanks-*, smalltreebanks-*, surtreebanks-* (ditto)
 # individual treebanks, e.g., pl_lfg-LAS-F1
 # pertreebank-* (ditto)
-# ranktreebanks, ranktreebanks-CLAS, ranktreebanks-both
+# ranktreebanks (max), aranktreebanks (avg), ranktreebanks-CLAS, ranktreebanks-both
 
 
 
@@ -252,13 +252,24 @@ if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPO
         print_table_markdown("### $treebank", "$treebank-$coremetric", @results);
     }
 }
-elsif ($metric =~ m/^ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
+elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
-    my $coremetric = $1;
+    my $a = $1;
+    my $coremetric = $2;
     my $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
     # For some metrics it is more interesting to see the average than the best result.
-    my $crit1 = 'avg'; # 'max';
-    my $crit2 = 'max'; # 'avg';
+    my $crit1;
+    my $crit2;
+    if (defined($a) && $a eq 'a')
+    {
+        $crit1 = 'avg';
+        $crit2 = 'max';
+    }
+    else
+    {
+        $crit1 = 'max';
+        $crit2 = 'avg';
+    }
     my @keys = sort
     {
         my $r = $treebanks->{$b}{"$crit1-$coremetric"} <=> $treebanks->{$a}{"$crit1-$coremetric"};
