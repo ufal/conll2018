@@ -270,8 +270,8 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(.+-F1)$/)
             ###!!! as a one-time experiment, so we go the easy way.
             if ($avg eq 'a')
             {
-                $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"max-LAS-F1"};
-                $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $mtreebanks->{$key}{"max-MLAS-F1"};
+                $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"avg-LAS-F1"};
+                $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $mtreebanks->{$key}{"avg-MLAS-F1"};
             }
             else
             {
