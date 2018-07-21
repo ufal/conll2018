@@ -254,14 +254,14 @@ if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPO
 }
 elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
 {
-    my $a = $1;
+    my $avg = $1;
     my $coremetric = $2;
     my $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
     # For some metrics it is more interesting to see the average than the best result.
     my $crit1;
     my $crit2;
     my $legend;
-    if (defined($a) && $a eq 'a')
+    if (defined($avg) && $avg eq 'a')
     {
         $crit1 = 'avg';
         $crit2 = 'max';
@@ -284,7 +284,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
                 $r = $a cmp $b;
             }
         }
-        printf STDERR ("%s %s %s %s %5.2f %5.2f %s %5.2f %5.2f\n", $coremetric, $crit1, $crit2, $a, $treebanks->{$a}{"$crit1-$coremetric"}, $treebanks->{$a}{"$crit2-$coremetric"}, $b, $treebanks->{$b}{"$crit1-$coremetric"}, $treebanks->{$b}{"$crit2-$coremetric"});
+        #printf STDERR ("%s %s %s %s %5.2f %5.2f %s %5.2f %5.2f\n", $coremetric, $crit1, $crit2, $a, $treebanks->{$a}{"$crit1-$coremetric"}, $treebanks->{$a}{"$crit2-$coremetric"}, $b, $treebanks->{$b}{"$crit1-$coremetric"}, $treebanks->{$b}{"$crit2-$coremetric"});
         $r
     }
     (keys(%{$treebanks}));
