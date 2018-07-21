@@ -284,6 +284,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
                 $r = $a cmp $b;
             }
         }
+        printf STDERR ("%s %s %s %s %5.2 %5.2 %s %5.2 %5.2\n", $coremetric, $crit1, $crit2, $a, $treebanks->{$a}{"$crit1-$coremetric"}, $treebanks->{$a}{"$crit2-$coremetric"}, $b, $treebanks->{$b}{"$crit1-$coremetric"}, $treebanks->{$b}{"$crit2-$coremetric"});
         $r
     }
     (keys(%{$treebanks}));
