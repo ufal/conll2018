@@ -293,6 +293,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
     my $maxteam_heading = 'maxteam' . (' ' x ($max_teamname-7));
     my $printmetric = $coremetric;
     $printmetric =~ s/-F1$//;
+    my $last_crit2;
     if ($format eq 'markdown')
     {
         print("## Treebanks ranked by $legend $printmetric\n\n");
@@ -322,12 +323,14 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
         if ($format eq 'latex')
         {
             $tbk =~ s/_/\\_/g;
-            printf("%2d. & %s & %5.2f & %s & %5.2f & \$\\pm\$%5.2f \\\\\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
+            my $ooo_avg = ($crit2 eq 'avg' && defined($last_crit2) && $treebanks->{$key}{"avg-$coremetric"} > $last_crit2) ? "\\bf " : '';
+            printf("%2d. & %s & %5.2f & %s & $ooo_avg%5.2f & \$\\pm\$%5.2f \\\\\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
         }
         else
         {
             printf("%2d.   %s   %5.2f   %s   %5.2f   ±%5.2f\n", $i, $tbk, $treebanks->{$key}{"max-$coremetric"}, $team, $treebanks->{$key}{"avg-$coremetric"}, sqrt($treebanks->{$key}{"var-$coremetric"}));
         }
+        $last_crit2 = $treebanks->{$key}{"$crit2-$coremetric"};
     }
     if ($format eq 'markdown')
     {
