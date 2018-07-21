@@ -252,11 +252,31 @@ if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPO
         print_table_markdown("### $treebank", "$treebank-$coremetric", @results);
     }
 }
-elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPOS-F1|U?Feats-F1|AllTags-F1|Lemmas-F1|Sentences-F1|Words-F1|Tokens-F1)$/)
+elsif ($metric =~ m/^(a?)ranktreebanks-(.+-F1)$/)
 {
     my $avg = $1;
     my $coremetric = $2;
-    my $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
+    my $treebanks;
+    # Special case: Compare the LAS and MLAS metrics.
+    # Rank treebanks by the difference between average LAS and MLAS.
+    if ($coremetric eq 'DMLAS-F1')
+    {
+        my $ltreebanks = rank_treebanks(\@alltbk, \@results, 'LAS-F1');
+        my $mtreebanks = rank_treebanks(\@alltbk, \@results, 'MLAS-F1');
+        foreach my $key (keys(%{$ltreebanks}))
+        {
+            $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"max-LAS-F1"} - $mtreebanks->{$key}{"max-MLAS-F1"};
+            $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $ltreebanks->{$key}{"teammax-LAS-F1"}.'-'.$mtreebanks->{$key}{"teammax-MLAS-F1"};
+            $ltreebanks->{$key}{"avg-DMLAS-F1"} = $ltreebanks->{$key}{"avg-LAS-F1"} - $mtreebanks->{$key}{"avg-MLAS-F1"};
+            ###!!! It is not clear what the variance of DMLAS should be. We take the mean value of the two.
+            $ltreebanks->{$key}{"var-DMLAS-F1"} = ($ltreebanks->{$key}{"var-LAS-F1"} + $mtreebanks->{$key}{"var-MLAS-F1"}) / 2;
+        }
+        $treebanks = $ltreebanks;
+    }
+    else
+    {
+        $treebanks = rank_treebanks(\@alltbk, \@results, $coremetric);
+    }
     # For some metrics it is more interesting to see the average than the best result.
     my $crit1;
     my $crit2;
