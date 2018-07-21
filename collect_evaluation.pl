@@ -260,17 +260,19 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
     # For some metrics it is more interesting to see the average than the best result.
     my $crit1;
     my $crit2;
+    my $legend;
     if (defined($a) && $a eq 'a')
     {
         $crit1 = 'avg';
         $crit2 = 'max';
+        $legend = 'average';
     }
     else
     {
         $crit1 = 'max';
         $crit2 = 'avg';
+        $legend = 'best';
     }
-    die("$a   $coremetric   $crit1   $crit2");
     my @keys = sort
     {
         my $r = $treebanks->{$b}{"$crit1-$coremetric"} <=> $treebanks->{$a}{"$crit1-$coremetric"};
@@ -292,7 +294,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
     $printmetric =~ s/-F1$//;
     if ($format eq 'markdown')
     {
-        print("## Treebanks ranked by best $printmetric\n\n");
+        print("## Treebanks ranked by $legend $printmetric\n\n");
         print("<pre>\n");
         print("                      max     $maxteam_heading   avg     stdev\n");
     }
@@ -336,7 +338,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
         print("\\end{tabular}\n");
         print("}\n");
         print("\\end{center}\n");
-        print("\\caption{\\label{tab:ranktreebanks-$coremetric}Treebank ranking by best parser $printmetric. ISO 639 language codes are followed by a treebank code.}\n");
+        print("\\caption{\\label{tab:ranktreebanks-$coremetric}Treebank ranking by $legend parser $printmetric. ISO 639 language codes are followed by a treebank code.}\n");
         print("\\end{table}\n");
     }
 }
