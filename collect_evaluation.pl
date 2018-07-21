@@ -265,8 +265,19 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(.+-F1)$/)
         my $mtreebanks = rank_treebanks(\@alltbk, \@results, 'MLAS-F1');
         foreach my $key (keys(%{$ltreebanks}))
         {
-            $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"max-LAS-F1"} - $mtreebanks->{$key}{"max-MLAS-F1"};
-            $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $ltreebanks->{$key}{"teammax-LAS-F1"}.'-'.$mtreebanks->{$key}{"teammax-MLAS-F1"};
+            ###!!! If we are ranking by the average, we will abuse the max and teammax columns to show the original LAS and MLAS instead.
+            ###!!! It would be cleaner to store the values separately and trigger an alternative table display below, but we need this
+            ###!!! as a one-time experiment, so we go the easy way.
+            if ($avg eq 'a')
+            {
+                $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"max-LAS-F1"};
+                $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $mtreebanks->{$key}{"max-MLAS-F1"};
+            }
+            else
+            {
+                $ltreebanks->{$key}{"max-DMLAS-F1"} = $ltreebanks->{$key}{"max-LAS-F1"} - $mtreebanks->{$key}{"max-MLAS-F1"};
+                $ltreebanks->{$key}{"teammax-DMLAS-F1"} = $ltreebanks->{$key}{"teammax-LAS-F1"}.'-'.$mtreebanks->{$key}{"teammax-MLAS-F1"};
+            }
             $ltreebanks->{$key}{"avg-DMLAS-F1"} = $ltreebanks->{$key}{"avg-LAS-F1"} - $mtreebanks->{$key}{"avg-MLAS-F1"};
             ###!!! It is not clear what the variance of DMLAS should be. We take the mean value of the two.
             $ltreebanks->{$key}{"var-DMLAS-F1"} = ($ltreebanks->{$key}{"var-LAS-F1"} + $mtreebanks->{$key}{"var-MLAS-F1"}) / 2;
