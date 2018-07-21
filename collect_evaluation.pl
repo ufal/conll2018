@@ -270,6 +270,7 @@ elsif ($metric =~ m/^(a?)ranktreebanks-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UP
         $crit1 = 'max';
         $crit2 = 'avg';
     }
+    die("$a   $coremetric   $crit1   $crit2");
     my @keys = sort
     {
         my $r = $treebanks->{$b}{"$crit1-$coremetric"} <=> $treebanks->{$a}{"$crit1-$coremetric"};
