@@ -130,7 +130,7 @@ my %teams_2017 =
     'ParisNLP'    => {'city' => 'Paris'}, # evaluator run: 2017-05-15-13-53-08
     'LATTICE'     => {'city' => 'Paris'}, # evaluator run: 2017-05-15-20-28-49
     'LIMSI-LIPN'  => {'city' => 'Paris', 'printname' => 'LIMSI'}, # evaluator run: 2017-05-14-03-47-23; 24.5.2017 Lauriane asked us to rename the team in the results to 'LIMSI'
-    'CLCL'        => {'city' => 'Genève'},
+    'CLCL2'       => {'city' => 'Genève', 'printname' => 'CLCL'},
     'IMS'         => {'city' => 'Stuttgart'}, # evaluator run: 2017-05-20-21-39-04
     'darc'        => {'city' => 'Tübingen'}, # evaluator run: 2017-05-09-21-54-48
     'conll17-baseline' => {'city' => 'Praha', 'printname' => 'BASELINE UDPipe 1.1'}, # evaluator run: 2017-05-15-10-42-39
