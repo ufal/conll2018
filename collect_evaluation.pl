@@ -16,6 +16,7 @@ use dzsys; # Dan's library for file system operations
 my $metric = 'total-LAS-F1';
 my $bestresults = 0; # display best result of each team regardless whether it is the final run of the primary system
 my $allresults = 0; # display multiple results per team
+my $systems = 2018; # switch to 2017 if looking for results of 2017 systems applied to 2018 test data
 my $copy_filtered_eruns; # target path, e.g. /net/work/people/zeman/unidep/conll2017-test-runs/filtered-eruns
 my $copy_conllu_files; # target path, e.g. /net/work/people/zeman/unidep/conll2017-test-runs/filtered-conllu
 my $format; # default: plain text table, no headings. Options: markdown|latex
@@ -24,6 +25,7 @@ GetOptions
     'metric=s' => \$metric,
     'bestresults' => \$bestresults,
     'allresults' => \$allresults,
+    'systems=s' => \$systems,
     'copy=s' => \$copy_filtered_eruns,
     'cocopy=s' => \$copy_conllu_files,
     'format=s' => \$format # format=markdown, format=latex
@@ -520,6 +522,18 @@ sub detect_input_path
         else
         {
             $testpath = $testpath_ufal1;
+        }
+    }
+    if ($systems==2017)
+    {
+        my $testpath_2017 = $testpath.'-for-conll17';
+        if (-d $testpath_2017)
+        {
+            $testpath = $testpath_2017;
+        }
+        else
+        {
+            die("Cannot find path $testpath_2017");
         }
     }
     return $testpath;
