@@ -116,6 +116,47 @@ my %secondary =
     'IBM-NY3' => 'IBM-NY',
     'Stanford-182' => 'Stanford-18'
 );
+my %teams_2017 =
+(
+    'fbaml'       => {'city' => 'Palo Alto'},
+    'Stanford'    => {'city' => 'Stanford'}, # evaluator run: 2017-05-15-02-58-52
+    'UALING'      => {'city' => 'Tucson'}, # evaluator run: 2017-05-15-06-34-39
+    'Recurrent-Team' => {'city' => 'Pittsburgh'},
+    'C2L2'          => {'city' => 'Ithaca'}, # evaluator run: 2017-05-12-17-36-03
+    'LyS-FASTPARSE' => {'city' => 'A Coruña'}, # evaluator run: 2017-05-14-10-10-24
+    'MetaRomance' => {'city' => 'Santiago de Compostela'}, # evaluator run: 2017-05-12-11-14-57},
+    'UParse'      => {'city' => 'Edinburgh'}, # evaluator run: 2017-05-13-01-27-31
+    'Orange-Deskin' => {'city' => 'Lannion', 'printname' => 'Orange – Deskiñ'}, # evaluator run: 2017-05-10-15-33-39
+    'ParisNLP'    => {'city' => 'Paris'}, # evaluator run: 2017-05-15-13-53-08
+    'LATTICE'     => {'city' => 'Paris'}, # evaluator run: 2017-05-15-20-28-49
+    'LIMSI-LIPN'  => {'city' => 'Paris', 'printname' => 'LIMSI'}, # evaluator run: 2017-05-14-03-47-23; 24.5.2017 Lauriane asked us to rename the team in the results to 'LIMSI'
+    'CLCL'        => {'city' => 'Genève'},
+    'IMS'         => {'city' => 'Stuttgart'}, # evaluator run: 2017-05-20-21-39-04
+    'darc'        => {'city' => 'Tübingen'}, # evaluator run: 2017-05-09-21-54-48
+    'conll17-baseline' => {'city' => 'Praha', 'printname' => 'BASELINE UDPipe 1.1'}, # evaluator run: 2017-05-15-10-42-39
+    'UFAL-UDPipe-1-2'  => {'city' => 'Praha', 'printname' => 'ÚFAL – UDPipe 1.2'}, # evaluator run: 2017-05-15-12-16-30
+    'Uppsala'     => {'city' => 'Uppsala'}, # evaluator run: 2017-05-15-07-22-05
+    'TurkuNLP'    => {'city' => 'Turku'}, # evaluator run: 2017-05-14-08-32-00
+    'UT'          => {'city' => 'Tartu'},
+    'RACAI'       => {'city' => 'București'},
+    'Koc-University' => {'city' => 'İstanbul', 'printname' => 'Koç University'}, # evaluator run: 2017-05-11-23-16-25
+    'METU'           => {'city' => 'Ankara'}, # evaluator run: 2017-05-14-09-38-40
+    'OpenU-NLP-Lab'  => {'city' => "Ra'anana", 'printname' => 'OpenU NLP Lab'},
+    'IIT-Kharagpur' => {'city' => 'Kharagpur', 'printname' => 'IIT Kharagpur'},
+    'HIT-SCIR'    => {'city' => 'Harbin'}, # evaluator run: 2017-05-11-04-53-11
+    'Wenba-NLU'   => {'city' => 'Wuhan'}, # evaluator run: 2017-05-14-06-53-39
+    'Wanghao-ftd-SJTU' => {'city' => 'Shanghai'}, # evaluator run: 2017-05-14-13-21-51
+    'ECNU'        => {'city' => 'Shanghai'}, # evaluator run: 2017-05-14-09-39-04
+    'Mengest'     => {'city' => 'Shanghai'},
+    'NAIST-SATO'  => {'city' => 'Nara', 'printname' => 'NAIST SATO'}, # evaluator run: 2017-05-15-11-48-44
+    'naistCL'     => {'city' => 'Nara'}, # evaluator run: 2017-05-14-07-31-46
+    'TRL'         => {'city' => 'Tokyo'}, # evaluator run: 2017-05-15-13-44-26
+    'MQuni'       => {'city' => 'Sydney'}  # evaluator run: 2017-05-10-05-14-53
+);
+if ($systems==2017)
+{
+    %teams = %teams_2017;
+}
 
 
 
