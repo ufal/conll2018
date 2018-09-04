@@ -32,7 +32,7 @@ GetOptions
 );
 # Metrics:
 # total-LAS-F1, -MLAS-, -BLEX-, -CLAS-, -UAS-, -UPOS-, -XPOS-, -UFeats-, -AllTags-, -Lemmas-, -Words-, -Tokens-, -Sentences-
-# bigtreebanks-*, pudtreebanks-*, smalltreebanks-*, surtreebanks-* (ditto)
+# bigtreebanks-*, pudtreebanks-*, smalltreebanks-*, surtreebanks-*, oldtreebanks-* (ditto)
 # individual treebanks, e.g., pl_lfg-LAS-F1
 # pertreebank-* (ditto)
 # ranktreebanks (max), aranktreebanks (avg), ranktreebanks-CLAS, ranktreebanks-both
@@ -57,6 +57,21 @@ my @pudtbk = qw(cs_pud en_pud fi_pud ja_modern sv_pud);
 my @surtbk = qw(bxr_bdt hsb_ufal hy_armtdp kk_ktb kmr_mg
                 br_keb fo_oft pcm_nsc th_pud);
 my @alltbk = (@bigtbk, @smltbk, @pudtbk, @surtbk);
+# Subset of treebanks that took part in both shared tasks (2017 and 2018), and were not surprise languages in 2017.
+# The results on these treebanks are thus partially comparable.
+# At least the systems can be expected to be able to parse them. However, if the annotation
+# was changed (improved) between UD 2.0 and 2.2, the old parser will perform poorly. And if the data split changed
+# and old training data are now test data, the old parser has an undeserved advantage.
+# NOTE: It should not matter that many treebanks were also renamed. A mapping of treebank codes is available to the parsers.
+my @oldtbk = qw(grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_ancora hr_set cs_cac cs_pdt
+                da_ddt nl_alpino nl_lassysmall en_ewt en_lines et_edt fi_ftb fi_tdt fr_gsd fr_sequoia
+                gl_ctg de_gsd got_proiel el_gdt he_htb hi_hdtb hu_szeged zh_gsd id_gsd it_isdt ja_gsd
+                ko_gsd la_ittb la_proiel lv_lvtb no_bokmaal no_nynorsk
+                cu_proiel fa_seraji pl_sz pt_bosque ro_rrt ru_syntagrus sk_snk sl_ssj es_ancora
+                sv_lines sv_talbanken tr_imst uk_iu ur_udtb ug_udt vi_vtb
+                gl_treegal ga_idt la_perseus sl_sst
+                cs_pud en_pud fi_pud sv_pud
+                kk_ktb);
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
 die("Expected $ntreebanks treebanks, found ".scalar(@alltbk)) if (scalar(@alltbk) != $ntreebanks);
@@ -224,7 +239,7 @@ add_team_printnames(\@results);
 # Adding averages should happen after combining runs because at present the combining code looks at all LAS-F1 entries that are not 'total-LAS-F1'
 # (in the future they should rather look into the @alltbk list).
 # Compute additional averages if they are required.
-if ($metric =~ m/^(pertreebank|alltreebanks|bigtreebanks|smalltreebanks|pudtreebanks|surtreebanks)-(.+-F1)$/)
+if ($metric =~ m/^(pertreebank|alltreebanks|bigtreebanks|smalltreebanks|pudtreebanks|surtreebanks|oldtreebanks)-(.+-F1)$/)
 {
     my $selection = $1;
     my $coremetric = $2;
@@ -268,6 +283,10 @@ if ($metric =~ m/^(pertreebank|alltreebanks|bigtreebanks|smalltreebanks|pudtreeb
         {
             add_average("surtreebanks-$metric", $metric, \@surtbk, \@results);
         }
+        if ($selection =~ m/^(pertreebank|oldtreebanks)$/)
+        {
+            add_average("oldtreebanks-$metric", $metric, \@oldtbk, \@results);
+        }
     }
 }
 # Print the results.
@@ -285,11 +304,14 @@ if ($metric =~ m/^pertreebank-(BLEX-F1|MLAS-F1|CLAS-F1|LAS-F1|UAS-F1|UPOS-F1|XPO
         "These treebanks lack development data but still have some reasonable training data.";
     my $surexpl = "Macro-average $coremetric of the ".scalar(@surtbk)." low-resource language treebanks: ".join(', ', @surtbk).'. '.
         "These languages have tiny sample data, or no training data at all.";
+    my $oldexpl = "Macro-average $coremetric of the ".scalar(@oldtbk)." old treebanks: ".join(', ', @oldtbk).'. '.
+        "These treebanks were used in both tasks (2017 and 2018) and were not surprise languages in 2017.";
     print_table_markdown("## All treebanks", "alltreebanks-$coremetric", @results);
     print_table_markdown("## Big treebanks only\n\n$bigexpl", "bigtreebanks-$coremetric", @results);
     print_table_markdown("## PUD treebanks only\n\n$pudexpl", "pudtreebanks-$coremetric", @results);
     print_table_markdown("## Small treebanks only\n\n$smallexpl", "smalltreebanks-$coremetric", @results);
     print_table_markdown("## Low-resource languages only\n\n$surexpl", "surtreebanks-$coremetric", @results);
+    print_table_markdown("## Old treebanks only\n\n$oldexpl", "oldtreebanks-$coremetric", @results);
     print("## Per treebank $coremetric\n\n\n\n");
     foreach my $treebank (sort(@alltbk))
     {
