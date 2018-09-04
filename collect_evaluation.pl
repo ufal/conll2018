@@ -72,15 +72,15 @@ my @oldtbk = qw(grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_ancora hr_set cs
                 gl_treegal ga_idt la_perseus sl_sst
                 cs_pud en_pud fi_pud sv_pud
                 kk_ktb);
-my @oldtbk_old_names = qw(grc grc_proiel ar eu bg ca hr cs_cac cs
-                da nl nl_lassysmall en en_lines et fi_ftb fi fr fr_sequoia
-                gl de got el he hi hu zh id it ja
-                ko la_ittb la_proiel lv no_bokmaal no_nynorsk
-                cu fa pl pt ro ru_syntagrus sk sl es_ancora
-                sv_lines sv tr uk ur ug vi
-                gl_treegal ga la sl_sst
+my @oldtbk_old_names = qw(grc_0 grc_proiel ar_0 eu_0 bg_0 ca_0 hr_0 cs_cac cs_0
+                da_0 nl_0 nl_lassysmall en_0 en_lines et_0 fi_ftb fi_0 fr_0 fr_sequoia
+                gl_0 de_0 got_0 el_0 he_0 hi_0 hu_0 zh_0 id_0 it_0 ja_0
+                ko_0 la_ittb la_proiel lv_0 no_bokmaal no_nynorsk
+                cu_0 fa_0 pl_0 pt_0 ro_0 ru_syntagrus sk_0 sl_0 es_ancora
+                sv_lines sv_0 tr_0 uk_0 ur_0 ug_0 vi_0
+                gl_treegal ga_0 la_0 sl_sst
                 cs_pud en_pud fi_pud sv_pud
-                kk);
+                kk_0);
 if ($systems==2017)
 {
     @oldtbk = @oldtbk_old_names;
