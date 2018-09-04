@@ -20,11 +20,14 @@ if [[ "$1" != "unoff" ]] ; then
   collect_evaluation.pl --metric ranktreebanks-BLEX-F1 --format markdown > results-treebanks-blex.md 2>/dev/null
   collect_evaluation.pl --metric ranktreebanks-Words-F1 --format markdown > results-treebanks-words.md 2>/dev/null
   collect_evaluation.pl --metric ranktreebanks-Sentences-F1 --format markdown > results-treebanks-sentences.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-LAS-F1  --systems 2017 --bestresults > results-las-2017.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-MLAS-F1 --systems 2017 --bestresults > results-mlas-2017.md 2>/dev/null
+  collect_evaluation.pl --metric pertreebank-BLEX-F1 --systems 2017 --bestresults > results-blex-2017.md 2>/dev/null
 fi
 cat <<EOF > results-best-all.md
 ---
 layout: page
-title: CoNLL 2017 Shared Task
+title: CoNLL 2018 Shared Task
 ---
 
 # Results: Unofficial runs included (LAS)
@@ -59,4 +62,49 @@ collect_evaluation.pl --metric total-BLEX-F1 --bestresults --format markdown >> 
 collect_evaluation.pl --metric total-LAS-F1 --allresults --format markdown >> results-best-all.md 2>/dev/null
 collect_evaluation.pl --metric total-MLAS-F1 --allresults --format markdown >> results-best-all.md 2>/dev/null
 collect_evaluation.pl --metric total-BLEX-F1 --allresults --format markdown >> results-best-all.md 2>/dev/null
+cat <<EOF > results-2017-systems.md
+---
+layout: page
+title: CoNLL 2018 Shared Task
+---
+
+# Results: 2017 shared task systems applied to 2018 test data
+
+<strong style='color:red'>DISCLAIMER:</strong> This is not the official ranking of systems participating in the shared task.
+
+The [systems from the 2017 shared task](http://universaldependencies.org/conll17/results.html) applied to the 2018 test data.
+While this is an interesting comparison, note that the 2017 systems
+do not comply with the 2018 rules because they were trained on a different
+release of Universal Dependencies. It may affect the results in both ways:
+if the annotation of the treebank was improved, the old parser is handicapped.
+If the training-test split has changed and the old training data are now in test data,
+the old parser is favored undeservedly.
+
+Also, the 2018 data contain eight new languages, and a number of new treebanks for the other languages.
+The rules of both tasks required that the parsers be robust enough and produce valid output for any
+language and treebank code, even if they are unknown. Most parsers ignored this request and simply
+crashed on unexpected language/treebank code; but even if they did not crash, their output on these
+languages is probably not interesting. Therefore, we define a subset of “old treebanks”, i.e.,
+those that were evaluated in both years. The tables on this page are macro-averages over the old
+treebanks. There are also links to separate pages with per-treebank results.
+
+Note that if a team has identical name in the two tasks, it does not necessarily mean that their
+2018 system can be considered a new version of the one from 2017. Sometimes a team used completely
+different software in the two years. On the other hand, in some cases same people from the same
+institution participated under different team names (e.g., 2017 RACAI is NLP-Cube in 2018).
+
+* [Per-treebank LAS results, 2017 systems](results-las-2017.html)
+* [Per-treebank LAS results, 2018 systems](results-las.html)
+* [Per-treebank MLAS results, 2017 systems](results-mlas-2017.html)
+* [Per-treebank MLAS results, 2018 systems](results-mlas.html)
+* [Per-treebank BLEX results, 2017 systems](results-blex-2017.html)
+* [Per-treebank BLEX results, 2018 systems](results-blex.html)
+
+EOF
+collect_evaluation.pl --metric oldtreebanks-LAS-F1 --systems 2017 --bestresults >> results-2017-systems.md 2>/dev/null
+collect_evaluation.pl --metric oldtreebanks-LAS-F1 --systems 2018 >> results-2017-systems.md 2>/dev/null
+collect_evaluation.pl --metric oldtreebanks-MLAS-F1 --systems 2017 --bestresults >> results-2017-systems.md 2>/dev/null
+collect_evaluation.pl --metric oldtreebanks-MLAS-F1 --systems 2018 >> results-2017-systems.md 2>/dev/null
+collect_evaluation.pl --metric oldtreebanks-BLEX-F1 --systems 2017 --bestresults >> results-2017-systems.md 2>/dev/null
+collect_evaluation.pl --metric oldtreebanks-BLEX-F1 --systems 2018 >> results-2017-systems.md 2>/dev/null
 zip results.zip results-*.md
