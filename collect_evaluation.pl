@@ -83,7 +83,13 @@ my @oldtbk_old_names = qw(grc_0 grc_proiel ar_0 eu_0 bg_0 ca_0 hr_0 cs_cac cs_0
                 kk_0);
 if ($systems==2017)
 {
+    my %oldnamemap;
+    for (my $i = 0; $i <= $#oldtbk; $i++)
+    {
+        $oldnamemap{$oldtbk[$i]} = $oldtbk_old_names[$i];
+    }
     @oldtbk = @oldtbk_old_names;
+    @alltbk = map {exists($oldnamemap{$_}) ? $oldnamemap{$_} : $_} (@alltbk);
 }
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
