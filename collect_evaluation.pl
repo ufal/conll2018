@@ -72,6 +72,19 @@ my @oldtbk = qw(grc_perseus grc_proiel ar_padt eu_bdt bg_btb ca_ancora hr_set cs
                 gl_treegal ga_idt la_perseus sl_sst
                 cs_pud en_pud fi_pud sv_pud
                 kk_ktb);
+my @oldtbk_old_names = qw(grc grc_proiel ar eu bg ca hr cs_cac cs
+                da nl nl_lassysmall en en_lines et fi_ftb fi fr fr_sequoia
+                gl de got el he hi hu zh id it ja
+                ko la_ittb la_proiel lv no_bokmaal no_nynorsk
+                cu fa pl pt ro ru_syntagrus sk sl es_ancora
+                sv_lines sv tr uk ur ug vi
+                gl_treegal ga la sl_sst
+                cs_pud en_pud fi_pud sv_pud
+                kk);
+if ($systems==2017)
+{
+    @oldtbk = @oldtbk_old_names;
+}
 # Sanity check: There are 82 treebanks in total.
 my $ntreebanks = 82;
 die("Expected $ntreebanks treebanks, found ".scalar(@alltbk)) if (scalar(@alltbk) != $ntreebanks);
