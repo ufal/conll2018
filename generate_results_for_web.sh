@@ -100,11 +100,52 @@ institution participated under different team names (e.g., 2017 RACAI is NLP-Cub
 * [Per-treebank BLEX results, 2017 systems](results-blex-2017.html)
 * [Per-treebank BLEX results, 2018 systems](results-blex.html)
 
+## LAS ranking 2017 systems
+
+<pre>
 EOF
 collect_evaluation.pl --metric oldtreebanks-LAS-F1 --systems 2017 --bestresults >> results-2017-systems.md 2>/dev/null
+cat <<EOF >> results-2017-systems.md
+</pre>
+
+## LAS ranking 2018 systems
+
+<pre>
+EOF
 collect_evaluation.pl --metric oldtreebanks-LAS-F1 --systems 2018 >> results-2017-systems.md 2>/dev/null
+cat <<EOF >> results-2017-systems.md
+</pre>
+
+## MLAS ranking 2017 systems
+
+<pre>
+EOF
 collect_evaluation.pl --metric oldtreebanks-MLAS-F1 --systems 2017 --bestresults >> results-2017-systems.md 2>/dev/null
+cat <<EOF >> results-2017-systems.md
+</pre>
+
+## MLAS ranking 2018 systems
+
+<pre>
+EOF
 collect_evaluation.pl --metric oldtreebanks-MLAS-F1 --systems 2018 >> results-2017-systems.md 2>/dev/null
+cat <<EOF >> results-2017-systems.md
+</pre>
+
+## BLEX ranking 2017 systems
+
+<pre>
+EOF
 collect_evaluation.pl --metric oldtreebanks-BLEX-F1 --systems 2017 --bestresults >> results-2017-systems.md 2>/dev/null
+cat <<EOF >> results-2017-systems.md
+</pre>
+
+## BLEX ranking 2018 systems
+
+<pre>
+EOF
 collect_evaluation.pl --metric oldtreebanks-BLEX-F1 --systems 2018 >> results-2017-systems.md 2>/dev/null
+cat <<EOF >> results-2017-systems.md
+</pre>
+EOF
 zip results.zip results-*.md
